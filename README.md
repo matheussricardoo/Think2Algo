@@ -1,6 +1,6 @@
 <div align="center">
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=3498DB&height=200&section=header&text=PathFinder&fontSize=50&fontColor=fff&animation=twinkling&fontAlignY=40&desc=Next.js%20|%20React%20|%20TypeScript%20|%20TailwindCSS&descAlignY=60&descSize=18">
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=3498DB&height=200&section=header&text=Think2Algo&fontSize=50&fontColor=fff&animation=twinkling&fontAlignY=40&desc=Next.js%20|%20React%20|%20TypeScript%20|%20TailwindCSS&descAlignY=60&descSize=18">
 
 <p align="center">
   <i>🚀 An interactive learning platform to master algorithms and data structures, featuring flashcard challenges and detailed explanations.</i>
@@ -40,10 +40,10 @@
 
 ```bash
 # Clone the repository | Clone o repositório
-git clone https://github.com/matheussricardoo/PathFinder.git
+git clone https://github.com/matheussricardoo/Think2Algo.git
 
 # Navigate to project directory | Navegue até o diretório do projeto
-cd PathFinder
+cd Think2Algo
 
 # Install dependencies | Instale as dependências
 npm install
