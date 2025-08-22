@@ -1,12 +1,17 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { I18nProvider } from '@/lib/i18n.tsx';
+import { I18nProvider } from '@/lib/i18n';
 import 'highlight.js/styles/atom-one-dark.css';
 
 export const metadata: Metadata = {
-  title: 'PathFinder',
+  title: 'Think2Algo',
   description: 'Your guide to mastering algorithms for technical challenges.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({
