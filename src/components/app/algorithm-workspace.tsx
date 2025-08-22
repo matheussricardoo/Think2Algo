@@ -9,16 +9,29 @@ import { ScrollArea } from '../ui/scroll-area';
 import { AppSidebar } from './app-sidebar';
 import { Card } from '../ui/card';
 import { algorithms } from '@/lib/algorithms';
-import { useI18n } from '@/lib/i18n.tsx';
+import { useI18n } from '@/lib/i18n';
 import { BigOExplained } from './big-o-explained';
+import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '../ui/sheet';
+import { Button } from '../ui/button';
+import { Menu } from 'lucide-react';
 
-const BASE_TITLE = 'PathFinder';
+const BASE_TITLE = 'Think2Algo';
 
 export function AlgorithmWorkspace() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm | null>(algorithms[0]);
   const [activeView, setActiveView] = useState('algorithm'); // 'algorithm', 'challenges', or 'big-o'
   const [challengeFilter, setChallengeFilter] = useState<string | null>(null);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const { t } = useI18n();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     let title = BASE_TITLE;
@@ -42,6 +55,11 @@ export function AlgorithmWorkspace() {
     }
     // Always clear filter when navigating from the sidebar
     setChallengeFilter(null);
+
+    // Close sidebar on mobile after selection
+    if (isMobile) {
+        setSidebarOpen(false);
+    }
   };
 
   const handlePracticeRequest = (algorithmId: string) => {
@@ -59,11 +77,7 @@ export function AlgorithmWorkspace() {
       case 'algorithm':
       default:
         if (selectedAlgorithm) {
-          return (
-             <ScrollArea className="h-full p-4 md:p-6">
-                <AlgorithmDetails algorithm={selectedAlgorithm} onPractice={handlePracticeRequest} />
-            </ScrollArea>
-          )
+          return <AlgorithmDetails algorithm={selectedAlgorithm} onPractice={handlePracticeRequest} />
         }
         return (
             <ScrollArea className="h-full p-4 md:p-6">
@@ -74,10 +88,43 @@ export function AlgorithmWorkspace() {
         );
     }
   };
+  
+  const sidebar = <AppSidebar onSelectView={handleSelectView} selectedView={activeView === 'algorithm' ? (selectedAlgorithm?.id || '') : activeView} />;
+
+  if (isMobile) {
+    return (
+        <div className="h-screen w-full flex">
+            <main className='flex-1 flex flex-col'>
+                <Header>
+                   <Sheet open={isSidebarOpen} onOpenChange={setSidebarOpen}>
+                        <SheetTrigger asChild>
+                            <Button variant="outline" size="icon">
+                                <Menu />
+                                <span className="sr-only">Open Menu</span>
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="p-0 w-64 sm:w-72">
+                           <SheetHeader>
+                               <SheetTitle className="sr-only">Menu</SheetTitle>
+                               <SheetDescription className="sr-only">
+                                   Main navigation for algorithms, Big O notation, and challenges.
+                               </SheetDescription>
+                           </SheetHeader>
+                           {sidebar}
+                        </SheetContent>
+                    </Sheet>
+                </Header>
+                <div className="flex-1 overflow-auto">
+                    {renderContent()}
+                </div>
+            </main>
+        </div>
+    )
+  }
 
   return (
     <div className="h-screen w-full flex">
-       <AppSidebar onSelectView={handleSelectView} selectedView={activeView === 'algorithm' ? (selectedAlgorithm?.id || '') : activeView} />
+       {sidebar}
        <main className='flex-1 flex flex-col'>
             <Header/>
             <div className="flex-1 overflow-auto">
