@@ -1,6 +1,5 @@
 import { useI18n } from '@/lib/i18n';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { CodeBlock } from './code-block';
 import { ScrollArea } from '../ui/scroll-area';
 
 export function BigOExplained() {
@@ -33,7 +32,9 @@ export function BigOExplained() {
                 <p className="text-muted-foreground mb-3">{complexity.description}</p>
                 <div className='font-code text-sm'>
                     <span className='font-semibold'>{t.bigO.complexities.exampleLabel}</span>
-                    <p className='text-muted-foreground bg-muted p-3 rounded-md mt-1'>{complexity.example}</p>
+                    <div className='text-muted-foreground bg-muted p-3 rounded-md mt-1 break-words'>
+                      <p>{complexity.example}</p>
+                    </div>
                 </div>
               </div>
             ))}

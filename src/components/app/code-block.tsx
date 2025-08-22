@@ -41,15 +41,15 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
   };
 
   return (
-    <div className="relative rounded-md bg-muted font-code">
-      <div className="absolute right-2 top-2 flex items-center justify-between">
-        <Button size="icon" variant="ghost" className="h-7 w-7" onClick={copyToClipboard}>
-          {hasCopied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+    <div className="relative rounded-md bg-muted font-code overflow-hidden">
+      <div className="absolute right-2 top-2 flex items-center justify-between z-10">
+        <Button size="icon" variant="ghost" className="h-6 w-6 sm:h-7 sm:w-7" onClick={copyToClipboard}>
+          {hasCopied ? <Check className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" /> : <Copy className="h-3 w-3 sm:h-4 sm:w-4" />}
           <span className="sr-only">{t.codeBlock.copyCode}</span>
         </Button>
       </div>
-      <pre className="overflow-x-auto p-4 pt-10 text-sm">
-        <code ref={codeRef} className={`language-${language} rounded-lg`}>
+      <pre className="overflow-hidden p-2 sm:p-4 pt-8 sm:pt-10 text-xs sm:text-sm break-all whitespace-pre-wrap">
+        <code ref={codeRef} className={`language-${language} rounded-lg break-all`}>
           {code}
         </code>
       </pre>
