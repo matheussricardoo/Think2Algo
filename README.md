@@ -40,7 +40,7 @@
 
 ```bash
 # Clone the repository | Clone o repositório
-git clone https://github.com/CommitToLearnn/PathFinder.git
+git clone https://github.com/matheussricardoo/PathFinder.git
 
 # Navigate to project directory | Navegue até o diretório do projeto
 cd PathFinder
