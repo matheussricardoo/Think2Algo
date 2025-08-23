@@ -302,14 +302,13 @@ def maxDepth(root):
 
 def isAnagram(s, t):
     """
-    Problema: Determinar se a string t é um anagrama da string s.
+    Determinar se t é anagrama de s.
     """
-    # Anagramas devem ter o mesmo comprimento.
+    # Anagramas devem ter mesmo comprimento
     if len(s) != len(t):
         return False
     
-    # Anagramas devem ter a mesma frequência para cada caractere.
-    # O objeto Counter cria um hash map de frequências de caracteres.
+    # Contar frequência dos caracteres
     return Counter(s) == Counter(t)`
     },
     { 
@@ -1127,10 +1126,9 @@ def shortestPath(grid, start, end):
 
 def groupAnagrams(strs):
     """
-    Problema: Agrupar anagramas de uma lista de strings.
+    Agrupar anagramas de uma lista.
     """
-    # Anagramas se tornam idênticos quando seus caracteres são ordenados.
-    # Podemos usar a string ordenada como chave em um hash map.
+    # Usar string ordenada como chave
     groups = defaultdict(list)
     
     for s in strs:
@@ -2434,78 +2432,78 @@ def topKFrequent(nums, k):
             
     return dp[-1][1]`
     },
-    { problem: 'Find the median of two sorted arrays.', solution: 'binary-search', difficulty: 'Medium',
+    { problem: 'Encontre a mediana de dois arrays ordenados.', solution: 'binary-search', difficulty: 'Médio',
       input: 'nums1 = [1,3], nums2 = [2]',
       output: '2.0',
-      explanation: 'This is a complex problem that can be solved with binary search in O(log(m+n)) time. The idea is to partition both arrays into two halves such that all elements in the left partitions are smaller than all elements in the right partitions, and the total number of elements in the left halves is equal to (or one more than) the total number in the right halves.',
+      explanation: 'Este é um problema complexo que pode ser resolvido com busca binária em tempo O(log(m+n)). A ideia é particionar ambos os arrays em duas metades tal que todos os elementos das partições esquerdas sejam menores que todos os elementos das partições direitas, e o número total de elementos nas metades esquerdas seja igual (ou um a mais) que o número total nas metades direitas.',
       pythonSolution: `def findMedianSortedArrays(nums1, nums2):
     """
-    Problem: Find the median of two sorted arrays efficiently.
+    Problema: Encontrar a mediana de dois arrays ordenados eficientemente.
     """
     A, B = nums1, nums2
     total = len(A) + len(B)
     half = total // 2
 
-    # Ensure A is the smaller array to optimize the binary search.
+    # Garante que A seja o menor array para otimizar a busca binária
     if len(B) < len(A):
         A, B = B, A
 
     l, r = 0, len(A) - 1
     while True:
-        i = (l + r) // 2  # A's partition index
-        j = half - i - 2  # B's partition index
+        i = (l + r) // 2  # Índice de partição do A
+        j = half - i - 2  # Índice de partição do B
 
         Aleft = A[i] if i >= 0 else float("-inf")
         Aright = A[i + 1] if (i + 1) < len(A) else float("inf")
         Bleft = B[j] if j >= 0 else float("-inf")
         Bright = B[j + 1] if (j + 1) < len(B) else float("inf")
 
-        # Check if we found the correct partition.
+        # Verifica se encontramos a partição correta.
         if Aleft <= Bright and Bleft <= Aright:
-            if total % 2: # Odd total length
+            if total % 2: # Comprimento total ímpar
                 return min(Aright, Bright)
-            # Even total length
+            # Comprimento total par
             return (max(Aleft, Bleft) + min(Aright, Bright)) / 2
         elif Aleft > Bright:
             r = i - 1
         else:
             l = i + 1`
     },
-    { problem: 'Given an array of integers, find the length of the longest increasing subsequence.', solution: 'dynamic-programming', difficulty: 'Medium',
+    { problem: 'Dado um array de inteiros, encontre o comprimento da subsequência crescente mais longa.', solution: 'dynamic-programming', difficulty: 'Médio',
       input: 'nums = [10,9,2,5,3,7,101,18]',
-      output: '4 (from [2,3,7,101])',
-      explanation: 'A classic DP problem. Let `dp[i]` be the length of the LIS ending at index `i`. Then, `dp[i] = 1 + max(dp[j])` for all `j < i` where `nums[j] < nums[i]`. A more efficient O(n log n) solution involves maintaining a sorted list of the smallest tail of all increasing subsequences.',
+      output: '4 (de [2,3,7,101])',
+      explanation: 'Um problema clássico de PD. Seja `dp[i]` o comprimento da SIC terminando no índice `i`. Então, `dp[i] = 1 + max(dp[j])` para todo `j < i` onde `nums[j] < nums[i]`. Uma solução mais eficiente O(n log n) envolve manter uma lista ordenada da menor cauda de todas as subsequências crescentes.',
       pythonSolution: `def lengthOfLIS(nums):
     """
-    Problem: Find the length of the longest increasing subsequence.
+    Problema: Encontrar o comprimento da subsequência crescente mais longa.
     """
-    # This O(n log n) solution maintains a sorted list 'tails'.
-    # 'tails[i]' is the smallest tail of all increasing subsequences of length i+1.
+    # Esta solução O(n log n) mantém uma lista ordenada 'tails'.
+    # 'tails[i]' é a menor cauda de todas as subsequências crescentes de comprimento i+1.
     tails = []
     for num in nums:
         import bisect
-        # Find the position where 'num' can be inserted to maintain order.
+        # Encontra a posição onde 'num' pode ser inserido para manter a ordem.
         i = bisect.bisect_left(tails, num)
         if i == len(tails):
-            # 'num' is larger than all existing tails, so it extends the LIS.
+            # 'num' é maior que todas as caudas existentes, então estende a LIS.
             tails.append(num)
         else:
-            # 'num' can replace an existing tail to form a potentially better LIS.
+            # 'num' pode substituir uma cauda existente para formar uma LIS potencialmente melhor.
             tails[i] = num
     return len(tails)`
     },
-    { problem: 'Given `n`, generate all structurally unique BST\'s (binary search trees) that store values 1...n.', solution: 'dynamic-programming', difficulty: 'Medium',
+    { problem: 'Dado `n`, gere todas as BST\'s (árvores de busca binária) estruturalmente únicas que armazenam valores 1...n.', solution: 'dynamic-programming', difficulty: 'Médio',
       input: 'n = 3',
-      output: '5 (the number of unique BST structures)',
-      explanation: 'This is a DP problem related to Catalan numbers. Let `G(n)` be the number of unique BSTs for `n` nodes. To construct a BST, we can choose any number `i` from 1 to `n` as the root. Then, there will be `i-1` nodes in the left subtree and `n-i` nodes in the right. The total number of trees is the sum over all `i` of `G(i-1) * G(n-i)`.',
+      output: '5 (o número de estruturas BST únicas)',
+      explanation: 'Este é um problema de PD relacionado aos números de Catalan. Seja `G(n)` o número de BSTs únicas para `n` nós. Para construir uma BST, podemos escolher qualquer número `i` de 1 a `n` como raiz. Então, haverá `i-1` nós na subárvore esquerda e `n-i` nós na direita. O número total de árvores é a soma sobre todos os `i` de `G(i-1) * G(n-i)`.',
       pythonSolution: `def numTrees(n):
     """
-    Problem: Find the number of structurally unique BSTs for n nodes with values 1 to n.
+    Problema: Encontrar o número de BSTs estruturalmente únicas para n nós com valores de 1 a n.
     """
     # This is the n-th Catalan number.
     # G(n) = sum_{i=1 to n} G(i-1) * G(n-i)
     dp = [0] * (n + 1)
-    dp[0] = 1 # Base case: one BST for 0 nodes (the empty tree).
+    dp[0] = 1 # Caso base: uma BST para 0 nós (a árvore vazia)
     
     for i in range(1, n + 1): # Number of nodes
         for j in range(1, i + 1): # Root node
@@ -2520,24 +2518,24 @@ def topKFrequent(nums, k):
       explanation: 'We iterate through the data. For each byte, we check if it is a start of a new character. If it is, we determine how many continuation bytes (`10xxxxxx`) should follow. We then check if the subsequent bytes are valid continuation bytes.',
       pythonSolution: `def validUtf8(data):
     """
-    Problem: Validate if a sequence of integers represents a valid UTF-8 encoding.
+    Problema: Validar se uma sequência de inteiros representa uma codificação UTF-8 válida.
     """
     num_bytes = 0
     for num in data:
-        # If we are not in the middle of a multi-byte character.
+        # Se não estamos no meio de um caractere multi-byte.
         if num_bytes == 0:
-            if (num >> 5) == 0b110: # 2-byte character
+            if (num >> 5) == 0b110: # Caractere de 2 bytes
                 num_bytes = 1
-            elif (num >> 4) == 0b1110: # 3-byte character
+            elif (num >> 4) == 0b1110: # Caractere de 3 bytes
                 num_bytes = 2
-            elif (num >> 3) == 0b11110: # 4-byte character
+            elif (num >> 3) == 0b11110: # Caractere de 4 bytes
                 num_bytes = 3
-            # If it's a 1-byte character, the most significant bit must be 0.
+            # Se é um caractere de 1 byte, o bit mais significativo deve ser 0.
             elif (num >> 7):
                 return False
-        # If we are expecting a continuation byte.
+        # Se estamos esperando um byte de continuação.
         else:
-            # It must start with '10'.
+            # Deve começar com '10'.
             if (num >> 6) != 0b10:
                 return False
             num_bytes -= 1
@@ -2545,10 +2543,10 @@ def topKFrequent(nums, k):
     # We must not be in the middle of a character at the end.
     return num_bytes == 0`
     },
-    { problem: 'Clone a graph. Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.', solution: 'bfs', difficulty: 'Medium',
+    { problem: 'Clone um grafo. Cada nó no grafo contém um val (int) e uma lista (List[Node]) de seus vizinhos.', solution: 'bfs', difficulty: 'Médio',
       input: 'adjList = [[2,4],[1,3],[2,4],[1,3]]',
-      output: 'A deep copy of the graph.',
-      explanation: 'We can use either BFS or DFS. We use a hash map to store the mapping from original nodes to their clones. This prevents getting stuck in cycles and ensures each node is cloned only once. We iterate through the original graph\'s nodes and for each node, we create a clone and then clone its neighbors.',
+      output: 'Uma cópia profunda do grafo.',
+      explanation: 'Podemos usar BFS ou DFS. Usamos um hash map para armazenar o mapeamento dos nós originais para seus clones. Isso previne ficarmos presos em ciclos e garante que cada nó seja clonado apenas uma vez. Iteramos pelos nós do grafo original e para cada nó, criamos um clone e então clonamos seus vizinhos.',
       pythonSolution: `class Node:
     def __init__(self, val = 0, neighbors = None):
         self.val = val
@@ -2556,7 +2554,7 @@ def topKFrequent(nums, k):
 
 def cloneGraph(node: 'Node') -> 'Node':
     """
-    Problem: Create a deep copy of a graph.
+    Problema: Criar uma cópia profunda de um grafo.
     """
     if not node:
         return None
@@ -2576,26 +2574,26 @@ def cloneGraph(node: 'Node') -> 'Node':
             
     return old_to_new[node]`
     },
-    { problem: 'Given a `m x n` matrix, if an element is 0, set its entire row and column to 0.', solution: 'two-pointers', difficulty: 'Medium',
+    { problem: 'Dada uma matriz `m x n`, se um elemento for 0, defina toda a sua linha e coluna como 0.', solution: 'two-pointers', difficulty: 'Médio',
       input: 'matrix = [[1,1,1],[1,0,1],[1,1,1]]',
       output: '[[1,0,1],[0,0,0],[1,0,1]]',
-      explanation: 'We can use the first row and first column of the matrix as markers. We iterate through the matrix. If we find a zero at `(i,j)`, we mark `matrix[i][0]` and `matrix[0][j]` as zero. We use separate variables to track if the first row/column themselves need to be zeroed. In a second pass, we use these markers to set the elements to zero.',
+      explanation: 'Podemos usar a primeira linha e primeira coluna da matriz como marcadores. Iteramos pela matriz. Se encontrarmos um zero em `(i,j)`, marcamos `matrix[i][0]` e `matrix[0][j]` como zero. Usamos variáveis separadas para rastrear se a primeira linha/coluna em si precisam ser zeradas. Em uma segunda passada, usamos esses marcadores para definir os elementos como zero.',
       pythonSolution: `def setZeroes(matrix):
     """
-    Problem: If an element in a matrix is 0, set its entire row and column to 0 in-place.
+    Problema: Se um elemento em uma matriz for 0, defina toda a sua linha e coluna como 0 no local.
     """
     rows, cols = len(matrix), len(matrix[0])
     first_row_zero = any(matrix[0][j] == 0 for j in range(cols))
     first_col_zero = any(matrix[i][0] == 0 for i in range(rows))
     
-    # Use the first row and col as markers.
+    # Usa a primeira linha e coluna como marcadores
     for i in range(1, rows):
         for j in range(1, cols):
             if matrix[i][j] == 0:
                 matrix[i][0] = 0
                 matrix[0][j] = 0
                 
-    # Set zeroes based on markers.
+    # Define zeros baseado nos marcadores
     for i in range(1, rows):
         for j in range(1, cols):
             if matrix[i][0] == 0 or matrix[0][j] == 0:
@@ -2609,24 +2607,24 @@ def cloneGraph(node: 'Node') -> 'Node':
         for i in range(rows):
             matrix[i][0] = 0`
     },
-    { problem: 'Product of Array Except Self. Given an array `nums` of `n` integers where `n > 1`, return an array `output` such that `output[i]` is equal to the product of all the elements of `nums` except `nums[i]`.', solution: 'dynamic-programming', difficulty: 'Medium',
+    { problem: 'Produto do Array Exceto Próprio. Dado um array `nums` de `n` inteiros onde `n > 1`, retorne um array `output` tal que `output[i]` seja igual ao produto de todos os elementos de `nums` exceto `nums[i]`.', solution: 'dynamic-programming', difficulty: 'Médio',
       input: 'nums = [1,2,3,4]',
       output: '[24,12,8,6]',
-      explanation: 'We can achieve this in O(n) time and O(1) extra space. We make two passes. In the first pass, we build up the result array where `res[i]` contains the product of all elements to the left of `i`. In the second pass, we iterate from right to left, multiplying `res[i]` by the product of all elements to the right of `i`.',
+      explanation: 'Podemos conseguir isso em tempo O(n) e espaço extra O(1). Fazemos duas passadas. Na primeira passada, construímos o array resultado onde `res[i]` contém o produto de todos os elementos à esquerda de `i`. Na segunda passada, iteramos da direita para a esquerda, multiplicando `res[i]` pelo produto de todos os elementos à direita de `i`.',
       pythonSolution: `def productExceptSelf(nums):
     """
-    Problem: Calculate the product of all elements in an array except self.
+    Problema: Calcular o produto de todos os elementos em um array exceto próprio.
     """
     n = len(nums)
     res = [1] * n
     
-    # First pass: calculate prefix products.
+    # Primeira passada: calcular produtos de prefixo
     prefix = 1
     for i in range(n):
         res[i] = prefix
         prefix *= nums[i]
         
-    # Second pass: calculate postfix products and multiply.
+    # Segunda passada: calcular produtos de sufixo e multiplicar
     postfix = 1
     for i in range(n - 1, -1, -1):
         res[i] *= postfix
@@ -2634,14 +2632,14 @@ def cloneGraph(node: 'Node') -> 'Node':
         
     return res`
     },
-    { problem: 'Course Schedule. There are a total of `n` courses you have to take, labeled from 0 to n-1. Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]. Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?', solution: 'dfs', difficulty: 'Medium',
+    { problem: 'Cronograma de Curso. Há um total de `n` cursos que você deve fazer, rotulados de 0 a n-1. Alguns cursos podem ter pré-requisitos, por exemplo, para fazer o curso 0 você deve primeiro fazer o curso 1, que é expresso como um par: [0,1]. Dado o número total de cursos e uma lista de pares de pré-requisitos, é possível para você terminar todos os cursos?', solution: 'dfs', difficulty: 'Médio',
       input: 'numCourses = 2, prerequisites = [[1,0]]',
       output: 'true',
-      explanation: 'This is a cycle detection problem in a directed graph. We can use DFS. We build an adjacency list representation of the graph. We maintain a visited set for each DFS path. If we encounter a node that is already in our current path, we have found a cycle.',
+      explanation: 'Este é um problema de detecção de ciclos em um grafo direcionado. Podemos usar DFS. Construímos uma representação de lista de adjacência do grafo. Mantemos um conjunto visitado para cada caminho DFS. Se encontrarmos um nó que já está em nosso caminho atual, encontramos um ciclo.',
       pythonSolution: `def canFinish(numCourses, prerequisites):
     """
-    Problem: Determine if all courses can be finished given a list of prerequisites.
-    This is equivalent to detecting a cycle in a directed graph.
+    Problema: Determinar se todos os cursos podem ser finalizados dada uma lista de pré-requisitos.
+    Isso é equivalente a detectar um ciclo em um grafo direcionado.
     """
     adj = {i: [] for i in range(numCourses)}
     for crs, pre in prerequisites:
@@ -2661,49 +2659,49 @@ def cloneGraph(node: 'Node') -> 'Node':
             if not dfs(pre):
                 return False
         visiting.remove(crs)
-        # Optimization: once we've validated a course, we don't need to check it again.
+        # Otimização: uma vez validado um curso, não precisamos verificá-lo novamente.
         adj[crs] = []
         return True
         
-    # Check each course in case the graph is not fully connected.
+    # Verifica cada curso caso o grafo não seja totalmente conectado.
     for crs in range(numCourses):
         if not dfs(crs):
             return False
     return True`
     },
-    // Hard
-    { problem: 'Given an array of non-negative integers representing the histogram\'s bar height where the width of each bar is 1, find the area of the largest rectangle in the histogram.', solution: 'two-pointers', difficulty: 'Hard',
+    // Difícil
+    { problem: 'Dado um array de inteiros não-negativos representando a altura das barras do histograma onde a largura de cada barra é 1, encontre a área do maior retângulo no histograma.', solution: 'two-pointers', difficulty: 'Difícil',
       input: 'heights = [2,1,5,6,2,3]',
-      output: '10 (from the rectangle of height 5 spanning 2 bars)',
-      explanation: 'We can use a monotonic stack. We iterate through the heights. If the current height is smaller than the height at the top of the stack, we can calculate the area for the rectangle with the height at the top of the stack. We pop from the stack until this condition is no longer true.',
+      output: '10 (do retângulo de altura 5 abrangendo 2 barras)',
+      explanation: 'Podemos usar uma pilha monotônica. Iteramos pelas alturas. Se a altura atual for menor que a altura no topo da pilha, podemos calcular a área para o retângulo com a altura no topo da pilha. Removemos da pilha até que essa condição não seja mais verdadeira.',
       pythonSolution: `def largestRectangleArea(heights):
     """
-    Problem: Find the largest rectangle area in a histogram.
+    Problema: Encontrar a maior área de retângulo em um histograma.
     """
     max_area = 0
-    # Stack stores tuples of (index, height).
+    # Pilha armazena tuplas de (índice, altura)
     stack = []
     
     for i, h in enumerate(heights):
         start = i
-        # When we encounter a bar shorter than the one at the stack's top,
-        # we can calculate the area of the popped bar.
+        # Quando encontramos uma barra menor que a do topo da pilha,
+        # podemos calcular a área da barra removida
         while stack and stack[-1][1] > h:
             index, height = stack.pop()
             max_area = max(max_area, height * (i - index))
             start = index
         stack.append((start, h))
         
-    # For any remaining bars in the stack, their rectangle extends to the end.
+    # Para barras restantes na pilha, seu retângulo se estende até o fim
     for i, h in stack:
         max_area = max(max_area, h * (len(heights) - i))
         
     return max_area`
     },
-    { problem: 'Given two sorted arrays `nums1` and `nums2` of size `m` and `n` respectively, find the median of the two sorted arrays. The overall run time complexity should be O(log(m+n)).', solution: 'binary-search', difficulty: 'Hard',
+    { problem: 'Dados dois arrays ordenados `nums1` e `nums2` de tamanho `m` e `n` respectivamente, encontre a mediana dos dois arrays ordenados. A complexidade de tempo total deve ser O(log(m+n)).', solution: 'binary-search', difficulty: 'Difícil',
       input: 'nums1 = [1,2], nums2 = [3,4]',
       output: '2.5',
-      explanation: 'The core idea is to find a partition in both arrays such that all elements in the left partitions are smaller than all elements in the right partitions. We can binary search for the correct partition in the smaller array, which then determines the partition in the larger array.',
+      explanation: 'A ideia central é encontrar uma partição em ambos os arrays tal que todos os elementos das partições esquerdas sejam menores que todos os elementos das partições direitas. Podemos fazer busca binária pela partição correta no array menor, o que então determina a partição no array maior.',
       pythonSolution: `def findMedianSortedArrays(nums1, nums2):
     """
     Problem: Find the median of two sorted arrays efficiently.
@@ -2734,13 +2732,13 @@ def cloneGraph(node: 'Node') -> 'Node':
         else:
             l = i + 1`
     },
-    { problem: 'Implement a regular expression matcher with support for `.` and `*`.', solution: 'dynamic-programming', difficulty: 'Hard',
+    { problem: 'Implemente um verificador de expressão regular com suporte para `.` e `*`.', solution: 'dynamic-programming', difficulty: 'Difícil',
       input: 's = "aab", p = "c*a*b"',
       output: 'true',
-      explanation: 'We use dynamic programming with a 2D DP table. `dp[i][j]` is true if the first `i` characters of `s` match the first `j` characters of `p`. We handle three cases for `p[j-1]`: it is a normal character, it is `.`, or it is `*`. The `*` case is complex as it can match zero or more of the preceding element.',
+      explanation: 'Usamos programação dinâmica com uma tabela DP 2D. `dp[i][j]` é verdadeiro se os primeiros `i` caracteres de `s` correspondem aos primeiros `j` caracteres de `p`. Lidamos com três casos para `p[j-1]`: é um caractere normal, é `.`, ou é `*`. O caso `*` é complexo pois pode corresponder a zero ou mais do elemento precedente.',
       pythonSolution: `def isMatch(s: str, p: str) -> bool:
     """
-    Problem: Implement a regex matcher supporting '.' and '*'.
+    Problema: Implementar um verificador de regex suportando '.' e '*'.
     """
     # DP with memoization (top-down)
     memo = {}
@@ -2766,13 +2764,13 @@ def cloneGraph(node: 'Node') -> 'Node':
 
     return dp(0, 0)`
     },
-    { problem: 'Given `n` non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.', solution: 'two-pointers', difficulty: 'Hard',
+    { problem: 'Dados `n` inteiros não-negativos representando um mapa de elevação onde a largura de cada barra é 1, calcule quanta água pode ser coletada depois da chuva.', solution: 'two-pointers', difficulty: 'Difícil',
       input: 'height = [0,1,0,2,1,0,1,3,2,1,2,1]',
       output: '6',
-      explanation: 'We use two pointers, `left` and `right`, and keep track of the maximum height seen so far from both sides (`left_max`, `right_max`). At each step, we move the pointer corresponding to the smaller max height. The water trapped at that position is the difference between the max height and the current height.',
+      explanation: 'Usamos dois ponteiros, `left` e `right`, e mantemos o controle da altura máxima vista até agora de ambos os lados (`left_max`, `right_max`). A cada passo, movemos o ponteiro correspondente à menor altura máxima. A água coletada naquela posição é a diferença entre a altura máxima e a altura atual.',
       pythonSolution: `def trap(height: list[int]) -> int:
     """
-    Problem: Compute how much water can be trapped after raining.
+    Problema: Calcular quanta água pode ser coletada depois da chuva.
     """
     if not height:
         return 0
@@ -2792,10 +2790,10 @@ def cloneGraph(node: 'Node') -> 'Node':
             res += rightMax - height[r]
     return res`
     },
-    { problem: 'Merge `k` sorted linked lists and return it as one sorted list. Analyze and describe its complexity.', solution: 'heap', difficulty: 'Hard',
+    { problem: 'Mescle `k` listas ligadas ordenadas e retorne como uma lista ordenada. Analise e descreva sua complexidade.', solution: 'heap', difficulty: 'Difícil',
       input: 'lists = [[1,4,5],[1,3,4],[2,6]]',
       output: '[1,1,2,3,4,4,5,6]',
-      explanation: 'We use a min-heap to keep track of the smallest element among all lists. We initialize the heap with the first node of each list. Then, we repeatedly extract the minimum node from the heap, add it to our result list, and insert the next node from the same list into the heap.',
+      explanation: 'Usamos um min-heap para manter o controle do menor elemento entre todas as listas. Inicializamos o heap com o primeiro nó de cada lista. Então, repetidamente extraímos o nó mínimo do heap, o adicionamos à nossa lista de resultado, e inserimos o próximo nó da mesma lista no heap.',
       pythonSolution: `import heapq
 
 class ListNode:
@@ -2805,11 +2803,11 @@ class ListNode:
 
 def mergeKLists(lists: list[ListNode]) -> ListNode:
     """
-    Problem: Merge k sorted linked lists into one.
+    Problema: Mesclar k listas ligadas ordenadas em uma.
     """
-    # Use a min-heap to efficiently get the smallest node.
-    # The heap stores tuples of (value, list_index, node).
-    # The list_index is a tie-breaker to handle nodes with the same value.
+    # Usa uma min-heap para obter eficientemente o menor nó.
+    # A heap armazena tuplas de (valor, índice_lista, nó).
+    # O índice_lista é um desempate para lidar com nós de mesmo valor.
     min_heap = []
     for i, l in enumerate(lists):
         if l:
@@ -2827,16 +2825,16 @@ def mergeKLists(lists: list[ListNode]) -> ListNode:
             
     return dummy.next`
     },
-    { problem: 'Given a string `s` and a dictionary of strings `wordDict`, add spaces in `s` to construct a sentence where each word is a valid dictionary word. Return all such possible sentences.', solution: 'backtracking', difficulty: 'Hard',
+    { problem: 'Dada uma string `s` e um dicionário de strings `wordDict`, adicione espaços em `s` para construir uma sentença onde cada palavra é uma palavra válida do dicionário. Retorne todas as sentenças possíveis.', solution: 'backtracking', difficulty: 'Difícil',
       input: 's = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]',
       output: '["cats and dog", "cat sand dog"]',
-      explanation: 'We use backtracking with memoization. We define a recursive function that finds all valid sentences for a suffix of `s`. For each prefix of the suffix that is a valid word, we make a recursive call for the rest of the suffix and combine the results.',
+      explanation: 'Usamos backtracking com memoização. Definimos uma função recursiva que encontra todas as sentenças válidas para um sufixo de `s`. Para cada prefixo do sufixo que é uma palavra válida, fazemos uma chamada recursiva para o resto do sufixo e combinamos os resultados.',
       pythonSolution: `def wordBreak(s: str, wordDict: list[str]) -> list[str]:
     """
-    Problem: Find all ways to break a string into a sequence of dictionary words.
+    Problema: Encontrar todas as maneiras de quebrar uma string em sequência de palavras do dicionário.
     """
     word_set = set(wordDict)
-    # Memoization to store results for substrings we've already processed.
+    # Memoização para armazenar resultados de substrings já processadas
     memo = {}
     
     def backtrack(sub):
@@ -2849,7 +2847,7 @@ def mergeKLists(lists: list[ListNode]) -> ListNode:
         for i in range(1, len(sub) + 1):
             prefix = sub[:i]
             if prefix in word_set:
-                # Get all valid sentences for the rest of the string.
+                # Obtém todas as sentenças válidas para o resto da string
                 for rest in backtrack(sub[i:]):
                     res.append(prefix + (" " if rest else "") + rest)
                     
@@ -2858,13 +2856,13 @@ def mergeKLists(lists: list[ListNode]) -> ListNode:
         
     return backtrack(s)`
     },
-    { problem: 'The N-Queens puzzle is the problem of placing `n` queens on an `n x n` chessboard such that no two queens attack each other. Given an integer `n`, return all distinct solutions to the N-Queens puzzle.', solution: 'backtracking', difficulty: 'Hard',
+    { problem: 'O quebra-cabeça das N-Rainhas é o problema de colocar `n` rainhas em um tabuleiro `n x n` tal que nenhuma rainha ataque outra. Dado um inteiro `n`, retorne todas as soluções distintas para o quebra-cabeça das N-Rainhas.', solution: 'backtracking', difficulty: 'Difícil',
       input: 'n = 4',
       output: '[ [".Q..","...Q","Q...","..Q."], ["..Q.","Q...","...Q",".Q.."] ]',
-      explanation: 'We use backtracking. We try to place a queen in each row, one by one. For each row, we iterate through all columns. If placing a queen at `(row, col)` is safe (i.e., not attacked by any previous queen), we place it and make a recursive call for the next row. We use sets to keep track of occupied columns and diagonals.',
+      explanation: 'Usamos backtracking. Tentamos colocar uma rainha em cada linha, uma por vez. Para cada linha, iteramos por todas as colunas. Se colocar uma rainha em `(row, col)` for seguro (ou seja, não atacada por nenhuma rainha anterior), a colocamos e fazemos uma chamada recursiva para a próxima linha. Usamos conjuntos para rastrear colunas e diagonais ocupadas.',
       pythonSolution: `def solveNQueens(n: int) -> list[list[str]]:
     """
-    Problem: Place n queens on an n x n chessboard so that no two queens attack each other.
+    Problema: Colocar n rainhas em um tabuleiro n x n para que nenhuma rainha ataque outra.
     """
     col = set()
     pos_diag = set() # (row + col) is constant for these diagonals
@@ -2900,13 +2898,13 @@ def mergeKLists(lists: list[ListNode]) -> ListNode:
     backtrack(0)
     return res`
     },
-    { problem: 'Given an array of integers, find the maximum sum of a subarray with the constraint that the subarray must be of size at least 1.', solution: 'dynamic-programming', difficulty: 'Hard',
+    { problem: 'Dado um array de inteiros, encontre a soma máxima de um subarray com a restrição de que o subarray deve ter tamanho de pelo menos 1.', solution: 'dynamic-programming', difficulty: 'Difícil',
       input: 'nums = [-2,1,-3,4,-1,2,1,-5,4]',
       output: '6',
-      explanation: 'This is Kadane\'s algorithm. We maintain two variables: `max_so_far` and `current_max`. We iterate through the array. `current_max` is the maximum of the current element or the current element plus `current_max`. `max_so_far` is updated at each step.',
+      explanation: 'Este é o algoritmo de Kadane. Mantemos duas variáveis: `max_so_far` e `current_max`. Iteramos pelo array. `current_max` é o máximo do elemento atual ou o elemento atual mais `current_max`. `max_so_far` é atualizado a cada passo.',
       pythonSolution: `def maxSubArray(nums: list[int]) -> int:
     """
-    Problem: Find the contiguous subarray with the largest sum.
+    Problema: Encontrar o subarray contíguo com a maior soma.
     """
     max_so_far = nums[0]
     current_max = nums[0]
@@ -2917,13 +2915,13 @@ def mergeKLists(lists: list[ListNode]) -> ListNode:
         
     return max_so_far`
     },
-    { problem: 'There are two sorted arrays `nums1` and `nums2` of size `m` and `n` respectively. Find the median of the two sorted arrays.', solution: 'binary-search', difficulty: 'Hard',
+    { problem: 'Existem dois arrays ordenados `nums1` e `nums2` de tamanho `m` e `n` respectivamente. Encontre a mediana dos dois arrays ordenados.', solution: 'binary-search', difficulty: 'Difícil',
       input: 'nums1 = [1,3], nums2 = [2]',
       output: '2.0',
-      explanation: 'This is a complex problem that can be solved with binary search in O(log(m+n)) time. The idea is to partition both arrays into two halves such that all elements in the left partitions are smaller than all elements in the right partitions, and the total number of elements in the left halves is equal to (or one more than) the total number in the right halves.',
+      explanation: 'Este é um problema complexo que pode ser resolvido com busca binária em tempo O(log(m+n)). A ideia é particionar ambos os arrays em duas metades tal que todos os elementos das partições esquerdas sejam menores que todos os elementos das partições direitas, e o número total de elementos nas metades esquerdas seja igual (ou um a mais) que o número total nas metades direitas.',
       pythonSolution: `def findMedianSortedArrays(nums1: list[int], nums2: list[int]) -> float:
     """
-    Problem: Find the median of two sorted arrays.
+    Problema: Encontrar a mediana de dois arrays ordenados.
     """
     A, B = nums1, nums2
     total = len(A) + len(B)
@@ -2951,16 +2949,16 @@ def mergeKLists(lists: list[ListNode]) -> ListNode:
         else:
             l = i + 1`
     },
-    { problem: 'You are given a list of `points` representing integer coordinates of some points on a 2D-plane, where `points[i] = [xi, yi]`. The cost of connecting two points `(xi, yi)` and `(xj, yj)` is the manhattan distance between them: `|xi - xj| + |yi - yj|`. Return the minimum cost to make all points connected. All points are connected if there is exactly one simple path between any two points.', solution: 'dfs', difficulty: 'Hard',
+    { problem: 'Você recebe uma lista de `points` representando coordenadas inteiras de alguns pontos em um plano 2D, onde `points[i] = [xi, yi]`. O custo de conectar dois pontos `(xi, yi)` e `(xj, yj)` é a distância manhattan entre eles: `|xi - xj| + |yi - yj|`. Retorne o custo mínimo para fazer todos os pontos conectados. Todos os pontos estão conectados se há exatamente um caminho simples entre quaisquer dois pontos.', solution: 'dfs', difficulty: 'Difícil',
       input: 'points = [[0,0],[2,2],[3,10],[5,2],[7,0]]',
       output: '20',
-      explanation: 'This is a Minimum Spanning Tree (MST) problem. We can use Prim\'s algorithm or Kruskal\'s algorithm. For Prim\'s, we start with an arbitrary point, and at each step, we add the cheapest edge that connects a point in the MST to a point outside the MST. A min-heap is used to efficiently find the cheapest edge.',
+      explanation: 'Este é um problema de Árvore Geradora Mínima (MST). Podemos usar o algoritmo de Prim ou o algoritmo de Kruskal. Para Prim, começamos com um ponto arbitrário, e a cada passo, adicionamos a aresta mais barata que conecta um ponto na MST a um ponto fora da MST. Um min-heap é usado para encontrar eficientemente a aresta mais barata.',
       pythonSolution: `import heapq
 
 def minCostConnectPoints(points: list[list[int]]) -> int:
     """
-    Problem: Find the minimum cost to connect all points, where cost is the
-    Manhattan distance. This is a Minimum Spanning Tree (MST) problem.
+    Problema: Encontrar o custo mínimo para conectar todos os pontos, onde o custo é a
+    distância Manhattan. Este é um problema de Árvore Geradora Mínima (MST).
     """
     n = len(points)
     adj = {i:[] for i in range(n)}
