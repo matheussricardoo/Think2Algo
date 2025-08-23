@@ -50,18 +50,21 @@ export const algorithms: Algorithm[] = [
     max_sum = window_sum
 
     for i in range(len(arr) - k):
-        window_sum = window_sum - arr[i] + arr[i + k]
+        window_sum = (window_sum - arr[i] + 
+                     arr[i + k])
         max_sum = max(max_sum, window_sum)
 
     return max_sum`,
       javascript: `function slidingWindow(arr, k) {
   // Implementation details
   let maxSum = 0;
-  let windowSum = arr.slice(0, k).reduce((a, b) => a + b, 0);
+  let windowSum = arr.slice(0, k)
+    .reduce((a, b) => a + b, 0);
   maxSum = windowSum;
 
   for (let i = 0; i < arr.length - k; i++) {
-    windowSum = windowSum - arr[i] + arr[i + k];
+    windowSum = windowSum - arr[i] + 
+                arr[i + k];
     maxSum = Math.max(maxSum, windowSum);
   }
 
@@ -241,16 +244,37 @@ def find_k_largest(nums, k):
     return heapq.nlargest(k, nums)
 
 def find_k_smallest(nums, k):
-    return heapq.nsmallest(k, nums)`,
-      javascript: `// JavaScript doesn't have a built-in heap.
-// A library like 'collections-js' or a custom implementation is needed.
+    return heapq.nsmallest(k, nums)
+
+# For custom heap operations:
+def heap_operations():
+    heap = []
+    heapq.heappush(heap, item)
+    min_item = heapq.heappop(heap)`,
+      javascript: `// JavaScript doesn't have built-in heap.
+// Use library or custom implementation.
 class MinHeap {
   constructor() {
     this.heap = [];
   }
-  // ... implementation for insert, extractMin, etc.
-}
-`,
+  
+  push(val) {
+    this.heap.push(val);
+    this.bubbleUp();
+  }
+  
+  pop() {
+    if (this.heap.length === 1) 
+      return this.heap.pop();
+    
+    const min = this.heap[0];
+    this.heap[0] = this.heap.pop();
+    this.bubbleDown();
+    return min;
+  }
+  
+  // Implementation for bubbleUp, bubbleDown
+}`,
     },
   },
   {
