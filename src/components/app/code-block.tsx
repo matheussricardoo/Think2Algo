@@ -41,18 +41,29 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
   };
 
   return (
-    <div className="relative rounded-md bg-muted font-code overflow-hidden">
+    <div className="relative rounded-md bg-muted font-code overflow-hidden w-full">
       <div className="absolute right-2 top-2 flex items-center justify-between z-10">
         <Button size="icon" variant="ghost" className="h-6 w-6 sm:h-7 sm:w-7" onClick={copyToClipboard}>
           {hasCopied ? <Check className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" /> : <Copy className="h-3 w-3 sm:h-4 sm:w-4" />}
           <span className="sr-only">{t.codeBlock.copyCode}</span>
         </Button>
       </div>
-      <pre className="overflow-hidden p-2 sm:p-4 pt-8 sm:pt-10 text-xs sm:text-sm break-all whitespace-pre-wrap">
-        <code ref={codeRef} className={`language-${language} rounded-lg break-all`}>
-          {code}
-        </code>
-      </pre>
+      <div className="overflow-x-auto w-full">
+        <pre className="p-2 sm:p-4 pt-8 sm:pt-10 text-[10px] xs:text-xs sm:text-sm min-w-0 leading-tight sm:leading-normal">
+          <code 
+            ref={codeRef} 
+            className={`language-${language} rounded-lg block`}
+            style={{
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-all',
+              overflowWrap: 'anywhere',
+              lineHeight: '1.3'
+            }}
+          >
+            {code}
+          </code>
+        </pre>
+      </div>
     </div>
   );
 }
