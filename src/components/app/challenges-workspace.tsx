@@ -1,25 +1,16 @@
 'use client';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { algorithms, Algorithm } from '@/lib/algorithms';
-import { RefreshCw, Lightbulb, X, Code, Eye, EyeOff } from 'lucide-react';
+import { RefreshCw, Lightbulb, X, Code } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/lib/i18n.tsx';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { CodeBlock } from './code-block';
-
-type Challenge = {
-  problem: string;
-  solution: string;
-  difficulty: 'Fácil' | 'Médio' | 'Difícil' | 'Easy' | 'Medium' | 'Hard';
-  input?: string;
-  output?: string;
-  explanation?: string;
-  pythonSolution?: string;
-};
+import type { Challenge, Solution } from '@/lib/types/challenge';
 
 const difficultyVariantMap = {
   Fácil: 'default',
@@ -40,7 +31,7 @@ export function ChallengesWorkspace({ algorithmFilter, onClearFilter }: Challeng
   const [challengeIndex, setChallengeIndex] = useState<number | null>(null);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<string | null>(null);
   const [flashcardState, setFlashcardState] = useState<'unanswered' | 'correct' | 'incorrect'>('unanswered');
-  const [showSolution, setShowSolution] = useState(false);
+  const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
   const { toast } = useToast();
   const labels = t.challengeLabels;
 
@@ -52,33 +43,50 @@ export function ChallengesWorkspace({ algorithmFilter, onClearFilter }: Challeng
   }, [algorithmFilter, localizedChallenges]);
 
 
-  const currentChallenge = useMemo(() => {
+  const currentChallenge: Challenge | null = useMemo(() => {
     if (challengeIndex === null || !filteredChallenges || filteredChallenges.length === 0) {
       return null;
     }
     return filteredChallenges[challengeIndex];
   }, [challengeIndex, filteredChallenges]);
 
-  const selectRandomChallenge = () => {
-    if (filteredChallenges && filteredChallenges.length > 0) {
-      const randomIndex = Math.floor(Math.random() * filteredChallenges.length);
-      setChallengeIndex(randomIndex);
-    } else {
+  const selectRandomChallenge = useCallback(() => {
+    if (!filteredChallenges || filteredChallenges.length === 0) {
       setChallengeIndex(null);
+      return;
     }
-  };
+    
+    let newIndex = Math.floor(Math.random() * filteredChallenges.length);
+    
+    // If there's more than one challenge, ensure the new one isn't the same as the current one.
+    if (filteredChallenges.length > 1 && newIndex === challengeIndex) {
+       // A simple loop is safer than recursion here to avoid deep stacks.
+       let attempts = 0;
+       while (newIndex === challengeIndex && attempts < 10) {
+         newIndex = Math.floor(Math.random() * filteredChallenges.length);
+         attempts++;
+       }
+    }
+    
+    setChallengeIndex(newIndex);
+  }, [filteredChallenges, challengeIndex]);
+
 
   useEffect(() => {
     selectRandomChallenge();
-  }, [algorithmFilter, t.language]);
+  }, [algorithmFilter, localizedChallenges]);
 
 
   const handleNextChallenge = () => {
     setSelectedAlgorithm(null);
     setFlashcardState('unanswered');
-    setShowSolution(false);
+    setSelectedSolution(null);
     selectRandomChallenge();
   };
+
+  const handleSelectSolution = (solution: Solution) => {
+    setSelectedSolution(prev => prev?.title === solution.title ? null : solution);
+  }
 
   const checkAnswer = () => {
     if (!selectedAlgorithm || !currentChallenge) {
@@ -92,6 +100,8 @@ export function ChallengesWorkspace({ algorithmFilter, onClearFilter }: Challeng
 
     if (selectedAlgorithm === currentChallenge.solution) {
       setFlashcardState('correct');
+      // Pre-select the first solution (usually the optimized one)
+      setSelectedSolution(currentChallenge.solutions[0]);
       toast({
         title: labels.correctTitle,
         description: labels.correctDesc,
@@ -100,6 +110,7 @@ export function ChallengesWorkspace({ algorithmFilter, onClearFilter }: Challeng
       });
     } else {
       setFlashcardState('incorrect');
+      setSelectedSolution(null);
       toast({
         title: labels.incorrectTitle,
         description: labels.incorrectDesc,
@@ -219,56 +230,48 @@ export function ChallengesWorkspace({ algorithmFilter, onClearFilter }: Challeng
             <CardHeader>
               <CardTitle className="text-green-400 text-base sm:text-lg md:text-xl">{labels.correctExclamation}</CardTitle>
             </CardHeader>
-            <CardContent className="text-green-200 space-y-4 overflow-hidden">
-              <div className="overflow-hidden">
-                <p
-                  className="text-sm sm:text-base md:text-base break-words word-wrap-break-word"
+            <CardContent>
+               <p
+                  className="text-sm sm:text-base md:text-base break-words word-wrap-break-word mb-4"
                   style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}
                   dangerouslySetInnerHTML={{
                     __html: labels.correctSolution.replace('{solution}', `<strong>${getSolutionName()}</strong>`),
                   }}
                 ></p>
-              </div>
-              
-              {currentChallenge.explanation && (
-                <div className="bg-green-900/30 p-3 sm:p-4 rounded-lg border border-green-600/30 overflow-hidden">
-                  <h4 className="font-semibold text-green-300 mb-2 text-sm sm:text-base break-words">{labels.solutionExplanation}</h4>
-                  <div className="text-green-200 text-xs sm:text-sm leading-relaxed overflow-hidden">
-                    <p className="break-words word-wrap-break-word hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>
-                      {currentChallenge.explanation}
-                    </p>
-                  </div>
-                </div>
-              )}
+                 <div className="flex flex-wrap gap-2">
+                    {currentChallenge.solutions.map((sol, index) => (
+                      <Button 
+                        key={index}
+                        onClick={() => handleSelectSolution(sol)}
+                        variant={selectedSolution?.title === sol.title ? "secondary" : "outline"}
+                        className="text-xs sm:text-sm"
+                      >
+                        {sol.title}
+                      </Button>
+                    ))}
+                 </div>
             </CardContent>
-            <CardFooter className="flex flex-col gap-3">
+            <CardFooter>
               <Button onClick={handleNextChallenge} className="w-full">{labels.nextChallenge}</Button>
-              {currentChallenge.pythonSolution && (
-                <Button 
-                  onClick={() => setShowSolution(!showSolution)} 
-                  variant="outline"
-                  className="w-full border-green-600 text-green-400 hover:bg-green-900/50 text-xs sm:text-sm"
-                >
-                  {showSolution ? <EyeOff className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" /> : <Eye className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />}
-                  <span className="hidden sm:inline">{showSolution ? labels.hideSolution : labels.showSolution}</span>
-                  <span className="sm:hidden">{showSolution ? 'Ocultar' : 'Ver Código'}</span>
-                </Button>
-              )}
             </CardFooter>
           </Card>
         )}
 
-        {flashcardState === 'correct' && showSolution && currentChallenge.pythonSolution && (
-          <Card className="border-green-600/50 mb-6 overflow-hidden">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-green-400 text-sm sm:text-base md:text-lg">
+        {selectedSolution && (
+          <Card className="border-gray-600/50 mb-6 overflow-hidden">
+            <CardHeader className="pb-3 bg-muted/30">
+              <CardTitle className="flex items-center gap-2 text-gray-300 text-sm sm:text-base md:text-lg">
                 <Code className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                <span className="truncate">Solução em Python</span>
+                <span className="truncate">{selectedSolution.title}</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-0 overflow-hidden">
+            <CardContent className="p-4 space-y-4">
+              <div>
+                <h4 className="font-semibold text-gray-300 mb-2 text-sm sm:text-base">{labels.solutionExplanation}</h4>
+                <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{selectedSolution.explanation}</p>
+              </div>
               <div className="w-full">
-                <CodeBlock language="python" code={currentChallenge.pythonSolution} />
+                <CodeBlock language="python" code={selectedSolution.code} />
               </div>
             </CardContent>
           </Card>
@@ -300,53 +303,13 @@ export function ChallengesWorkspace({ algorithmFilter, onClearFilter }: Challeng
                   </div>
                 </div>
               </div>
-              
-              {currentChallenge.explanation && (
-                <div className="bg-red-900/30 p-3 sm:p-4 rounded-lg border border-red-600/30 overflow-hidden">
-                  <h4 className="font-semibold text-red-300 mb-2 text-sm sm:text-base break-words">{labels.solutionExplanation}</h4>
-                  <div className="text-red-200 text-xs sm:text-sm leading-relaxed overflow-hidden">
-                    <p className="break-words word-wrap-break-word hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'break-word'}}>
-                      {currentChallenge.explanation}
-                    </p>
-                  </div>
-                </div>
-              )}
             </CardContent>
-            <CardFooter className="flex flex-col gap-3">
-              <div className="flex flex-col sm:flex-row gap-3 w-full">
-                <Button onClick={() => setFlashcardState('unanswered')} className="w-full sm:w-auto">{labels.tryAgain}</Button>
-                <Button onClick={handleNextChallenge} variant="secondary" className="w-full sm:w-auto">
-                  {labels.nextChallenge}
-                </Button>
-              </div>
-              {currentChallenge.pythonSolution && (
-                <Button 
-                  onClick={() => setShowSolution(!showSolution)} 
-                  variant="outline"
-                  className="w-full border-red-600 text-red-400 hover:bg-red-900/50 text-xs sm:text-sm"
-                >
-                  {showSolution ? <EyeOff className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" /> : <Eye className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />}
-                  <span className="hidden sm:inline">{showSolution ? labels.hideSolution : labels.showSolution}</span>
-                  <span className="sm:hidden">{showSolution ? 'Ocultar' : 'Ver Código'}</span>
-                </Button>
-              )}
+            <CardFooter className="flex flex-col sm:flex-row gap-3 w-full">
+              <Button onClick={() => setFlashcardState('unanswered')} className="w-full sm:w-auto">{labels.tryAgain}</Button>
+              <Button onClick={handleNextChallenge} variant="secondary" className="w-full sm:w-auto">
+                {labels.nextChallenge}
+              </Button>
             </CardFooter>
-          </Card>
-        )}
-
-        {flashcardState === 'incorrect' && showSolution && currentChallenge.pythonSolution && (
-          <Card className="border-red-600/50 mb-6 overflow-hidden">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-red-400 text-sm sm:text-base md:text-lg">
-                <Code className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                <span className="truncate">Solução em Python</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0 overflow-hidden">
-              <div className="w-full">
-                <CodeBlock language="python" code={currentChallenge.pythonSolution} />
-              </div>
-            </CardContent>
           </Card>
         )}
         </>
