@@ -11,6 +11,7 @@ import { Card } from '../ui/card';
 import { algorithms } from '@/lib/algorithms';
 import { useI18n } from '@/lib/i18n';
 import { BigOExplained } from './big-o-explained';
+import { MikeFramework } from './mike-framework';
 import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Sheet,
@@ -27,7 +28,7 @@ const BASE_TITLE = 'Think2Algo';
 
 export function AlgorithmWorkspace() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm | null>(algorithms[0]);
-  const [activeView, setActiveView] = useState('algorithm'); // 'algorithm', 'challenges', or 'big-o'
+  const [activeView, setActiveView] = useState('algorithm'); // 'algorithm', 'challenges', 'big-o', or 'mike'
   const [challengeFilter, setChallengeFilter] = useState<string | null>(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const { t } = useI18n();
@@ -41,6 +42,8 @@ export function AlgorithmWorkspace() {
         title = `${BASE_TITLE} | ${t.sidebar.challenges}`;
     } else if (activeView === 'big-o') {
         title = `${BASE_TITLE} | ${t.sidebar.bigO}`;
+    } else if (activeView === 'mike') {
+        title = `${BASE_TITLE} | ${t.sidebar.mikeFramework}`;
     }
     document.title = title;
   }, [activeView, selectedAlgorithm, t]);
@@ -74,6 +77,8 @@ export function AlgorithmWorkspace() {
         return <ChallengesWorkspace algorithmFilter={challengeFilter} onClearFilter={() => setChallengeFilter(null)} />;
       case 'big-o':
         return <BigOExplained />;
+      case 'mike':
+        return <MikeFramework />;
       case 'algorithm':
       default:
         if (selectedAlgorithm) {
