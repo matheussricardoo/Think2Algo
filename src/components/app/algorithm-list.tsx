@@ -4,7 +4,7 @@ import { algorithms, type Algorithm } from '@/lib/algorithms';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
-import { Dices, Gauge } from 'lucide-react';
+import { Dices, Gauge, Wrench } from 'lucide-react';
 import { useI18n } from '@/lib/i18n.tsx';
 
 type AlgorithmListProps = {
@@ -26,6 +26,10 @@ export function AlgorithmList({ selectedView, onSelectView }: AlgorithmListProps
   const handleSelectBigO = () => {
     onSelectView('big-o');
   };
+  
+  const handleSelectMike = () => {
+    onSelectView('mike');
+  };
 
   return (
     <nav className="flex flex-col gap-1">
@@ -39,6 +43,17 @@ export function AlgorithmList({ selectedView, onSelectView }: AlgorithmListProps
       >
         <Gauge className="h-5 w-5 shrink-0" />
         <span className="truncate">{t.sidebar.bigO}</span>
+      </Button>
+      <Button
+        variant="ghost"
+        className={cn(
+          'w-full justify-start gap-3 px-3',
+          selectedView === 'mike' && 'bg-muted text-primary hover:bg-muted hover:text-primary'
+        )}
+        onClick={handleSelectMike}
+      >
+        <Wrench className="h-5 w-5 shrink-0" />
+        <span className="truncate">{t.sidebar.mikeFramework}</span>
       </Button>
       <Separator className="my-2" />
       {algorithms.map((algo) => (
