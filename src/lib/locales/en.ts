@@ -135,6 +135,8 @@ export const en = {
     typicalProblem: 'Typical Problem',
     codeTemplates: 'Code Templates',
     codeTemplatesDescription: 'Basic templates in Python and JavaScript to get you started.',
+    visualization: 'Visualization',
+    visualizationInDevelopment: 'Visualization in development for this algorithm',
     bigO: 'Big O Notation',
     bigODescription: 'The performance characteristics of this algorithm.',
     timeComplexity: 'Time Complexity',
@@ -3162,7 +3164,403 @@ class MedianFinder:
         }
       ]
     }
-  ]
+  ],
+  visualizations: {
+    title: 'Algorithm Visualization',
+    description: 'Interactive step-by-step demonstration',
+    controls: {
+      play: 'Play',
+      pause: 'Pause',
+      reset: 'Reset',
+      step: 'Step',
+      previous: 'Previous',
+      next: 'Next',
+      speed: 'Speed'
+    },
+    common: {
+      of: 'of',
+      complexity: 'Complexity',
+      status: 'Status',
+      value: 'Value',
+      array: 'Array',
+      target: 'Target',
+      actions: 'Actions',
+      generate: 'Generate Random Example',
+      apply: 'Apply',
+      complete: 'Complete',
+      found: 'Found',
+      notFound: 'Not Found',
+      start: 'Start',
+      searching: 'Searching',
+      visited: 'Visited',
+      current: 'Current',
+      distance: 'Distance',
+      path: 'Path',
+      match: 'Match',
+      calculating: 'Calculating',
+      result: 'Result',
+      // UI Labels
+      arrayCommaSeparated: 'Array (comma separated):',
+      windowSize: 'Window Size:',
+      targetValue: 'Target Value:',
+      generateRandom: 'Generate Random Example',
+      randomArray: 'Random Array',
+      customArray: 'Custom Array'
+    },
+    slidingWindow: {
+      title: 'Sliding Window',
+      description: 'Finds the maximum sum subarray of a given size using a sliding window technique.',
+      windowSize: 'Window Size',
+      maxSum: 'Maximum Sum',
+      currentSum: 'Current Sum',
+      windowPosition: 'Window Position',
+      maxPosition: 'Max Position',
+      // Dynamic descriptions
+      initializing: (windowSize: number) => 
+        `Initializing window of size ${windowSize}. Calculating initial sum.`,
+      windowTooLarge: 'Window size is larger than the array',
+      slidingWindow: (removed: number, removedPos: number, added: number, addedPos: number, currentSum: number) => 
+        `Sliding window: removing ${removed} (position ${removedPos}), adding ${added} (position ${addedPos}). Current sum: ${currentSum}`,
+      completed: (maxSum: number, maxStart: number) => 
+        `Completed! The maximum sum found is ${maxSum}, in the window starting at position ${maxStart}.`,
+    },
+    twoPointers: {
+      title: 'Two Pointers',
+      description: 'Finds pairs in a sorted array that sum to a target value using convergent pointers.',
+      sortedArray: 'Sorted Array',
+      left: 'Left',
+      right: 'Right',
+      sum: 'Sum',
+      comparison: 'Comparison',
+      pointerPositions: 'Pointer Positions',
+      tooSmall: 'Too Small',
+      tooLarge: 'Too Large',
+      solutionFound: 'Solution found!',
+      noSolutionFound: 'No solution found',
+      target: 'Target',
+      // Dynamic descriptions
+      initializing: (leftVal: number, rightPos: number, rightVal: number, target: number) => 
+        `Initializing pointers: left at position 0 (${leftVal}) and right at position ${rightPos} (${rightVal}). Looking for sum = ${target}.`,
+      found: (leftVal: number, rightVal: number, sum: number, target: number, leftPos: number, rightPos: number) => 
+        `Found! ${leftVal} + ${rightVal} = ${sum} = ${target}. Indices are [${leftPos}, ${rightPos}].`,
+      tooSmallDetail: (leftVal: number, rightVal: number, sum: number, target: number) => 
+        `${leftVal} + ${rightVal} = ${sum} < ${target}. Sum too small, moving left pointer right.`,
+      tooLargeDetail: (leftVal: number, rightVal: number, sum: number, target: number) => 
+        `${leftVal} + ${rightVal} = ${sum} > ${target}. Sum too large, moving right pointer left.`,
+      leftMoved: (leftPos: number, leftVal: number, rightVal: number, newSum: number) => 
+        `Left pointer moved to position ${leftPos} (${leftVal}). New sum: ${leftVal} + ${rightVal} = ${newSum}.`,
+      rightMoved: (rightPos: number, rightVal: number, leftVal: number, newSum: number) => 
+        `Right pointer moved to position ${rightPos} (${rightVal}). New sum: ${leftVal} + ${rightVal} = ${newSum}.`,
+      notFound: (target: number) => 
+        `No solution found. Pointers crossed without finding a sum equal to ${target}.`,
+      notFoundStatus: 'Not Found'
+    },
+    binarySearch: {
+      title: 'Binary Search',
+      description: 'Finds an element in a sorted array by repeatedly dividing the search space in half.',
+      sortedArray: 'Sorted Array',
+      left: 'Left',
+      mid: 'Mid',
+      right: 'Right',
+      searchSpace: 'Search Space',
+      comparison: 'Comparison at middle position',
+      iterations: 'iterations for array of size',
+      maximum: 'Maximum of',
+      maxIterations: 'Maximum of {max} iterations for array of size {size}',
+      // Dynamic descriptions
+      initializing: (arrayLength: number, target: number, right: number) => 
+        `Initializing binary search. Sorted array of ${arrayLength} elements. Looking for ${target}. Left=0, Right=${right}.`,
+      iteration: (iteration: number, left: number, right: number, mid: number, midValue: number) => 
+        `Iteration ${iteration}: Calculating mid = (${left} + ${right}) / 2 = ${mid}. Value at mid: ${midValue}.`,
+      targetFound: (midValue: number, target: number, mid: number) => 
+        `Target found! ${midValue} == ${target}. Element is at position ${mid}.`,
+      targetInRightHalf: (midValue: number, target: number, newLeft: number) => 
+        `${midValue} < ${target}. Target is in right half. Updating left = ${newLeft}.`,
+      targetInLeftHalf: (midValue: number, target: number, newRight: number) => 
+        `${midValue} > ${target}. Target is in left half. Updating right = ${newRight}.`,
+      newSearchSpace: (left: number, right: number, size: number) => 
+        `New search space: [${left}, ${right}]. Size: ${size} elements.`,
+      targetNotFound: (left: number, right: number, target: number) => 
+        `Target not found. Left (${left}) > Right (${right}). Element ${target} is not in the array.`,
+      binarySearchTitle: 'Binary Search',
+      searchSpaceLabel: 'Search Space',
+      comparisonLabel: 'Comparison at middle position',
+      elementFound: 'Element found!',
+      elementNotFound: 'Element not found'
+    },
+    backtracking: {
+      title: 'Backtracking - Subset Sum',
+      description: 'Finds all subsets that sum to a target value using backtracking search.',
+      availableNumbers: 'Available Numbers',
+      targetSum: 'Target Sum',
+      currentPath: 'Current Path',
+      currentSum: 'Current Sum',
+      decisionTree: 'Decision Tree',
+      level: 'Tree Level',
+      included: 'Included',
+      considering: 'Considering',
+      exploring: 'Exploring',
+      solutions: 'solution(s) found',
+      backtrack: 'Backtracking',
+      addNumber: 'Adding Number',
+      skipNumber: 'Skipping Number',
+      solutionFound: 'Solution Found',
+      pathRejected: 'Path Rejected',
+      searchComplete: 'Search Complete',
+      startSearch: 'Starting Search',
+      solutionCount: (count: number) => `${count} solution(s) found`,
+      complexityInfo: 'Complexity: O(2^n) - Explores all possible combinations',
+      pruningNote: 'Backtracking allows pruning the search tree when conditions are violated',
+      // Dynamic descriptions
+      currentState: (path: string, sum: number, index: number) => 
+        `Current state: path=[${path}], sum=${sum}, index=${index}`,
+      solutionFoundDetail: (path: string, sum: number) => 
+        `Solution found! [${path}] = ${sum}`,
+      tryingInclude: (num: number, newSum: number) => 
+        `Trying to include ${num}. New sum would be: ${newSum}`,
+      addingNumber: (num: number) => 
+        `Adding ${num} to path. Exploring recursively...`,
+      backtrackingRemove: (num: number) => 
+        `Backtracking: removing ${num} from path. Returning to explore other options.`,
+      skippingNumber: (num: number) => 
+        `Skipping ${num}. Exploring next number...`,
+      startingSearch: (target: number, numbers: string) => 
+        `Starting search for subsets that sum to ${target} using numbers [${numbers}]`,
+      searchCompleted: (count: number, solutions: string) => 
+        `Search completed! Found ${count} solution(s): ${solutions}`,
+    },
+    bfs: {
+      title: 'BFS - Breadth-First Search',
+      description: 'Explores the graph level by level, visiting all nodes at the same distance before going further.',
+      startNode: 'Start Node',
+      targetNode: 'Target Node',
+      generateGraph: 'Generate Random Graph',
+      resetGraph: 'Reset Graph',
+      useDefaultGraph: 'Use Default Graph',
+      queue: 'Queue (FIFO)',
+      distances: 'Distances from',
+      unvisited: 'Unvisited',
+      inQueue: 'In Queue',
+      pathFound: 'Path Found',
+      targetUnreachable: 'Target Unreachable',
+      bfsComplete: 'BFS Complete',
+      visitingNode: 'Visiting Node',
+      exploringNeighbors: 'Exploring Neighbors',
+      startingBfs: 'Starting BFS',
+      guaranteesShortestPath: 'BFS guarantees the shortest path in unweighted graphs',
+      statusPathFound: 'Path found!',
+      statusTargetUnreachable: 'Target unreachable',
+      statusComplete: 'BFS Complete',
+      statusVisiting: 'Visiting node',
+      statusExploring: 'Exploring neighbors',
+      statusStarting: 'Starting BFS',
+      pathLabel: 'Path',
+      // Legend labels
+      visited: 'Visited',
+      path: 'Path',
+      queueLabel: 'Queue (FIFO)',
+      visitedLabel: 'Visited',
+      current: 'Current',
+      distancesFrom: 'Distances from',
+      targetNodeLabel: 'Target Node',
+      // Dynamic descriptions
+      initializing: (startNode: string) => 
+        `Starting BFS from node ${startNode}. Adding ${startNode} to queue.`,
+      visiting: (currentNode: string, distance: number) => 
+        `Removing ${currentNode} from queue and marking as visited. Distance: ${distance}.`,
+      targetFound: (targetNode: string, path: string[]) => 
+        `Target ${targetNode} found! Path: ${path.join(' → ')}`,
+      exploringNeighborsDetail: (currentNode: string, neighbors: string[]) => 
+        `Exploring neighbors of ${currentNode}: [${neighbors.join(', ')}]. Adding to queue.`,
+      noNeighbors: (currentNode: string) => 
+        `Node ${currentNode} has no unvisited neighbors.`,
+      queueUpdate: (queue: string[], next: string) => 
+        `Current queue: [${queue.join(', ')}]. Next: ${next}.`,
+      notFound: (targetNode: string, startNode: string) => 
+        `Target ${targetNode} is not reachable from ${startNode}.`,
+      completed: (visited: string[]) => 
+        `BFS completed. Nodes visited: [${visited.join(', ')}]`
+    },
+    dfs: {
+      title: 'DFS - Depth-First Search',
+      description: 'Explores the graph in depth, following a path to the end before backtracking.',
+      startNode: 'Start Node',
+      targetNode: 'Target Node',
+      generateGraph: 'Generate Random Graph',
+      resetGraph: 'Reset Graph',
+      useDefaultGraph: 'Use Default Graph',
+      recursionStack: 'Recursion Stack',
+      depth: 'Depth',
+      discoveryFinishTimes: 'Discovery/Finish Times',
+      discoveryTime: 'Discovery time',
+      finishTime: 'Finish time',
+      pathFound: 'Path Found',
+      targetUnreachable: 'Target Unreachable',
+      dfsComplete: 'DFS Complete',
+      visitingNode: 'Visiting Node',
+      exploringNeighbors: 'Exploring Neighbors',
+      backtracking: 'Backtracking',
+      finishingNode: 'Finishing Node',
+      startingDfs: 'Starting DFS',
+      usesLessMemory: 'DFS uses less memory than BFS, but doesn\'t guarantee shortest path',
+      // Legend labels
+      unvisited: 'Unvisited',
+      exploring: 'Exploring',
+      current: 'Current',
+      visited: 'Visited',
+      path: 'Path',
+      discoveryTimes: 'Discovery Times',
+      finishTimes: 'Finish Times',
+      complexityInfo: 'Complexity: O(V + E) - Explores all vertices and edges',
+      complexityNote: 'DFS uses less memory than BFS, but doesn\'t guarantee shortest path',
+      // Dynamic descriptions
+      initializing: (startNode: string) => 
+        `Starting DFS from node ${startNode}. Adding ${startNode} to stack.`,
+      visiting: (node: string, time: number, depth: number) => 
+        `Visiting node ${node}. Discovery time: ${time}. Depth: ${depth}.`,
+      targetFound: (targetNode: string, path: string[]) => 
+        `Target ${targetNode} found! Path: [${path.join(' → ')}]`,
+      exploringNeighborsDetail: (node: string, neighbors: string[]) => 
+        `Exploring neighbors of ${node}: [${neighbors.join(', ')}]. Recursing in depth.`,
+      recursiveCall: (neighbor: string, depth: number) => 
+        `Making recursive call to node ${neighbor} (depth ${depth}).`,
+      finishing: (node: string, time: number) => 
+        `Finishing processing node ${node}. Finish time: ${time}.`,
+      starting: (targetNode: string) => 
+        `Starting depth-first search. Looking for node ${targetNode}.`,
+      notFound: (targetNode: string) => 
+        `Target ${targetNode} was not found. Search completed.`,
+      completed: (visited: string[]) => 
+        `DFS completed. Nodes visited: [${visited.join(', ')}]`
+    },
+    dynamicProgramming: {
+      title: 'Dynamic Programming',
+      description: 'Solves complex problems by dividing them into smaller subproblems and storing results.',
+      problem: 'Problem',
+      fibonacci: 'Fibonacci',
+      knapsack: 'Knapsack',
+      lcs: 'LCS',
+      capacity: 'Capacity',
+      string1: 'String 1',
+      string2: 'String 2',
+      memoizationTable: 'Memoization Table',
+      callStack: 'Call Stack',
+      availableItems: 'Available Items',
+      dpTable: 'DP Table',
+      weight: 'Weight',
+      value: 'Value',
+      maxValue: 'Maximum Value',
+      selectedItems: 'Selected Items',
+      lcsFound: 'LCS Found',
+      lcsLength: 'LCS Length',
+      lcsString: 'LCS',
+      length: 'Length',
+      cacheHit: 'Cache Hit',
+      match: 'Match',
+      calculating: 'Calculating',
+      comparing: 'Comparing',
+      checking: 'Checking',
+      found: 'Found',
+      avoiding: 'Avoiding recalculation',
+      notInMemo: 'Not in memo',
+      stored: 'Stored in memo',
+      finalMemo: 'Final memo contains',
+      calculatedValues: 'calculated values',
+      itemDoesntFit: 'Item doesn\'t fit',
+      copying: 'Copying previous value',
+      memoizationVsBruteForce: 'Fibonacci: O(n) with memoization vs O(2^n) without',
+      knapsackComplexity: 'Knapsack: O(nW) where n=items, W=capacity',
+      lcsComplexity: 'LCS: O(mn) where m,n are string lengths',
+      dividesProblems: 'Dynamic Programming: Divides problems into subproblems and reuses solutions',
+      // Dynamic descriptions
+      fibonacciStart: (n: number) => `Calculating Fibonacci(${n}) using dynamic programming with memoization.`,
+      fibonacciCalling: (n: number) => `Calling fib(${n}). Checking if it's in memo...`,
+      fibonacciFoundInMemo: (n: number, value: number) => `fib(${n}) found in memo: ${value}. Avoiding recalculation!`,
+      fibonacciBaseCase: (n: number) => `Base case: fib(${n}) = ${n}. Storing in memo.`,
+      fibonacciNotInMemo: (n: number) => `fib(${n}) not in memo. Calculating fib(${n-1}) + fib(${n-2})...`,
+      fibonacciCalculated: (n: number, result1: number, result2: number, value: number) => `fib(${n}) = fib(${n-1}) + fib(${n-2}) = ${result1} + ${result2} = ${value}. Stored in memo.`,
+      fibonacciFinal: (n: number, result: number, memoSize: number) => `Fibonacci(${n}) = ${result}. Final memo contains ${memoSize} calculated values.`,
+      knapsackStart: (capacity: number, n: number) => `Solving knapsack problem: capacity=${capacity}, ${n} items. Creating DP table[${n+1}][${capacity+1}].`,
+      knapsackConsidering: (i: number, w: number, weight: number, value: number) => `DP[${i}][${w}]: Considering item ${i} (weight=${weight}, value=${value}) with capacity ${w}.`,
+      knapsackItemFits: (takeItem: number, skipItem: number, chosen: number) => `Item fits! Comparing: take item (${takeItem}) vs. skip item (${skipItem}). Choosing ${chosen}.`,
+      knapsackItemDoesntFit: (weight: number, capacity: number, value: number) => `Item doesn't fit (weight ${weight} > capacity ${capacity}). Copying previous value: ${value}.`,
+      knapsackFinalResult: (maxValue: number, items: string[]) => `Maximum value: ${maxValue}. Selected items: [${items.join(', ')}].`,
+      lcsStart: (str1: string, str2: string, m: number, n: number) => `Finding LCS of "${str1}" and "${str2}". Creating DP table[${m+1}][${n+1}].`,
+      lcsComparing: (i: number, j: number, char1: string, char2: string) => `DP[${i}][${j}]: Comparing "${char1}" and "${char2}".`,
+      lcsMatch: (i: number, j: number, value: number) => `Characters match! DP[${i}][${j}] = DP[${i-1}][${j-1}] + 1 = ${value}.`,
+      lcsDifferent: (i: number, j: number, value: number) => `Characters different. DP[${i}][${j}] = max(DP[${i-1}][${j}], DP[${i}][${j-1}]) = ${value}.`,
+      lcsFinal: (lcs: string, length: number) => `LCS found: "${lcs}" (length: ${length}).`,
+    },
+    heap: {
+      title: 'Heap',
+      description: 'Complete binary tree data structure where each node satisfies the heap property.',
+      heapType: 'Heap Type',
+      maxHeap: 'Max-Heap',
+      minHeap: 'Min-Heap',
+      operation: 'Operation',
+      insert: 'Insert',
+      extract: 'Extract',
+      heapify: 'Heapify Array',
+      valueToInsert: 'Value to Insert',
+      customArray: 'Custom Array',
+      generateHeap: 'Random Heap',
+      binaryTree: 'Binary Tree',
+      property: 'Property: Each node is',
+      greaterOrEqual: 'greater or equal',
+      lessOrEqual: 'less or equal',
+      toChildren: 'to its children',
+      arrayRepresentation: 'Array Representation',
+      currentOperation: 'Current Operation',
+      heapSize: 'Heap Size',
+      minimum: 'Minimum',
+      maximum: 'Maximum',
+      insertion: 'Insertion',
+      preparingExtraction: 'Preparing Extraction',
+      extractionComplete: 'Extraction Complete',
+      heapifyComplete: 'Heapify Complete',
+      heapifyUp: 'Heapify Up',
+      heapifyDown: 'Heapify Down',
+      swap: 'Swap',
+      start: 'Starting Operation',
+      elementsSwapped: 'Elements Swapped',
+      insertingElement: 'Inserting Element',
+      movingUp: 'Moving Up Tree',
+      movingDown: 'Moving Down Tree',
+      operationError: 'Operation Error',
+      insertExtractComplexity: 'Insert/Extract O(log n), Heapify O(n), Access min/max O(1)',
+      idealForPriorityQueues: 'Heaps are ideal for priority queues and algorithms like Heap Sort',
+      maxElement: 'Maximum Element',
+      minElement: 'Minimum Element',
+      operationDetails: 'Operation Details',
+      insertedValue: 'Inserted value',
+      extractedValue: 'Extracted value',
+      comparing: 'Comparing',
+      swappedIndices: 'Swapped: indices',
+      complexities: 'Complexities',
+      // Dynamic descriptions
+      comparingWithParent: (current: number, currentIdx: number, parent: number, parentIdx: number) => 
+        `Comparing ${current} (index ${currentIdx}) with parent ${parent} (index ${parentIdx}).`,
+      checkingChildren: (current: number, currentIdx: number, left: string, right: string) => 
+        `Checking children of ${current} (index ${currentIdx}). Left: ${left}, Right: ${right}.`,
+      startingOperation: (operation: string, heapType: string, heap: string) => 
+        `Starting ${operation} operation on ${heapType}. Initial state: [${heap}].`,
+      insertingValue: (value: number, index: number) => 
+        `Inserting ${value} at end of heap. New position: index ${index}.`,
+      heapEmpty: () => 
+        `Heap empty! Cannot extract element.`,
+      extractingElement: (element: number, isMax: boolean) => 
+        `Extracting ${isMax ? 'maximum' : 'minimum'} element: ${element}. Moving last element to root.`,
+      newElementAtRoot: (value: number) => 
+        `New element at root: ${value}. Running heapify-down to restore property.`,
+      extractionCompleted: (element: number, heap: string) => 
+        `Extraction completed. Element ${element} was removed. Final heap: [${heap}].`,
+      buildingHeap: (heapType: string) => 
+        `Building ${heapType} from array. Starting from last non-leaf node.`,
+      heapifyingFrom: (index: number, value: number) => 
+        `Running heapify-down from index ${index} (value: ${value}).`,
+    }
+  }
 };
 
+    
     
