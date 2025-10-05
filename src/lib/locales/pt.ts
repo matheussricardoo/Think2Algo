@@ -135,6 +135,8 @@ export const pt = {
     typicalProblem: 'Problema Típico',
     codeTemplates: 'Modelos de Código',
     codeTemplatesDescription: 'Modelos básicos em Python e JavaScript para você começar.',
+    visualization: 'Visualização',
+    visualizationInDevelopment: 'Visualização em desenvolvimento para este algoritmo',
     bigO: 'Notação Big O',
     bigODescription: 'As características de desempenho deste algoritmo.',
     timeComplexity: 'Complexidade de Tempo',
@@ -1468,7 +1470,391 @@ def maxSlidingWindow(nums, k):
         }
       ]
     }
-  ]
+  ],
+  visualizations: {
+    title: 'Visualização de Algoritmos',
+    description: 'Demonstração interativa passo a passo',
+    controls: {
+      play: 'Reproduzir',
+      pause: 'Pausar',
+      reset: 'Reiniciar',
+      step: 'Passo',
+      previous: 'Anterior',
+      next: 'Próximo',
+      speed: 'Velocidade'
+    },
+    common: {
+      of: 'de',
+      complexity: 'Complexidade',
+      status: 'Status',
+      value: 'Valor',
+      array: 'Array',
+      target: 'Alvo',
+      actions: 'Ações',
+      generate: 'Gerar Exemplo Aleatório',
+      apply: 'Aplicar',
+      complete: 'Completo',
+      found: 'Encontrado',
+      notFound: 'Não Encontrado',
+      start: 'Início',
+      searching: 'Buscando',
+      visited: 'Visitados',
+      current: 'Atual',
+      distance: 'Distância',
+      path: 'Caminho',
+      match: 'Match',
+      calculating: 'Calculando',
+      result: 'Resultado',
+      // UI Labels
+      arrayCommaSeparated: 'Array (separado por vírgulas):',
+      windowSize: 'Tamanho da Janela:',
+      targetValue: 'Valor Alvo:',
+      generateRandom: 'Gerar Exemplo Aleatório',
+      randomArray: 'Array Aleatório',
+      customArray: 'Array Personalizado'
+    },
+    slidingWindow: {
+      title: 'Janela Deslizante',
+      description: 'Encontra o subarray de soma máxima de um tamanho dado usando técnica de janela deslizante.',
+      windowSize: 'Tamanho da Janela',
+      maxSum: 'Soma Máxima',
+      currentSum: 'Soma Atual',
+      windowPosition: 'Posição da Janela',
+      maxPosition: 'Posição Máxima',
+      // Dynamic descriptions
+      initializing: (windowSize: number) => 
+        `Inicializando a janela de tamanho ${windowSize}. Calculando a soma inicial.`,
+      windowTooLarge: 'Tamanho da janela é maior que o array',
+      slidingWindow: (removed: number, removedPos: number, added: number, addedPos: number, currentSum: number) => 
+        `Deslizando a janela: removendo ${removed} (posição ${removedPos}), adicionando ${added} (posição ${addedPos}). Soma atual: ${currentSum}`,
+      completed: (maxSum: number, maxStart: number) => 
+        `Concluído! A soma máxima encontrada é ${maxSum}, na janela que inicia na posição ${maxStart}.`,
+    },
+    twoPointers: {
+      title: 'Dois Ponteiros',
+      description: 'Encontra pares em um array ordenado que somam um valor alvo usando ponteiros convergentes.',
+      sortedArray: 'Array Ordenado',
+      left: 'Esquerda',
+      right: 'Direita',
+      sum: 'Soma',
+      comparison: 'Comparação',
+      pointerPositions: 'Posições dos Ponteiros',
+      tooSmall: 'Muito Pequeno',
+      tooLarge: 'Muito Grande',
+      solutionFound: 'Solução encontrada!',
+      noSolutionFound: 'Nenhuma solução encontrada',
+      target: 'Alvo',
+      // Dynamic descriptions
+      initializing: (leftVal: number, rightPos: number, rightVal: number, target: number) => 
+        `Inicializando os ponteiros: esquerda na posição 0 (${leftVal}) e direita na posição ${rightPos} (${rightVal}). Procurando por soma = ${target}.`,
+      found: (leftVal: number, rightVal: number, sum: number, target: number, leftPos: number, rightPos: number) => 
+        `Encontrado! ${leftVal} + ${rightVal} = ${sum} = ${target}. Os índices são [${leftPos}, ${rightPos}].`,
+      tooSmallDetail: (leftVal: number, rightVal: number, sum: number, target: number) => 
+        `${leftVal} + ${rightVal} = ${sum} < ${target}. Soma muito pequena, movendo ponteiro esquerdo para a direita.`,
+      tooLargeDetail: (leftVal: number, rightVal: number, sum: number, target: number) => 
+        `${leftVal} + ${rightVal} = ${sum} > ${target}. Soma muito grande, movendo ponteiro direito para a esquerda.`,
+      leftMoved: (leftPos: number, leftVal: number, rightVal: number, newSum: number) => 
+        `Ponteiro esquerdo movido para posição ${leftPos} (${leftVal}). Nova soma: ${leftVal} + ${rightVal} = ${newSum}.`,
+      rightMoved: (rightPos: number, rightVal: number, leftVal: number, newSum: number) => 
+        `Ponteiro direito movido para posição ${rightPos} (${rightVal}). Nova soma: ${leftVal} + ${rightVal} = ${newSum}.`,
+      notFound: (target: number) => 
+        `Nenhuma solução encontrada. Os ponteiros se cruzaram sem encontrar uma soma igual a ${target}.`,
+      notFoundStatus: 'Não Encontrado'
+    },
+    binarySearch: {
+      title: 'Busca Binária',
+      description: 'Encontra um elemento em um array ordenado dividindo repetidamente o espaço de busca pela metade.',
+      sortedArray: 'Array Ordenado',
+      left: 'Esquerda',
+      mid: 'Meio',
+      right: 'Direita',
+      searchSpace: 'Espaço de Busca',
+      comparison: 'Comparação na posição do meio',
+      iterations: 'iterações para array de tamanho',
+      maximum: 'Máximo de',
+      maxIterations: 'Máximo de {max} iterações para array de tamanho {size}',
+      // Dynamic descriptions
+      initializing: (arrayLength: number, target: number, right: number) => 
+        `Inicializando busca binária. Array ordenado de ${arrayLength} elementos. Procurando por ${target}. Left=0, Right=${right}.`,
+      iteration: (iteration: number, left: number, right: number, mid: number, midValue: number) => 
+        `Iteração ${iteration}: Calculando meio = (${left} + ${right}) / 2 = ${mid}. Valor no meio: ${midValue}.`,
+      targetFound: (midValue: number, target: number, mid: number) => 
+        `Alvo encontrado! ${midValue} == ${target}. O elemento está na posição ${mid}.`,
+      targetInRightHalf: (midValue: number, target: number, newLeft: number) => 
+        `${midValue} < ${target}. O alvo está na metade direita. Atualizando left = ${newLeft}.`,
+      targetInLeftHalf: (midValue: number, target: number, newRight: number) => 
+        `${midValue} > ${target}. O alvo está na metade esquerda. Atualizando right = ${newRight}.`,
+      newSearchSpace: (left: number, right: number, size: number) => 
+        `Novo espaço de busca: [${left}, ${right}]. Tamanho: ${size} elementos.`,
+      targetNotFound: (left: number, right: number, target: number) => 
+        `Alvo não encontrado. Left (${left}) > Right (${right}). O elemento ${target} não está no array.`,
+      binarySearchTitle: 'Binary Search (Busca Binária)',
+      searchSpaceLabel: 'Espaço de Busca',
+      comparisonLabel: 'Comparação no meio',
+      elementFound: 'Elemento encontrado!',
+      elementNotFound: 'Elemento não encontrado'
+    },
+    backtracking: {
+      title: 'Backtracking - Subset Sum',
+      description: 'Encontra todos os subconjuntos que somam um valor alvo usando busca com retrocesso.',
+      availableNumbers: 'Números Disponíveis',
+      targetSum: 'Soma Alvo',
+      currentPath: 'Caminho Atual',
+      currentSum: 'Soma Atual',
+      decisionTree: 'Árvore de Decisão',
+      level: 'Nível da Árvore',
+      included: 'Incluído',
+      considering: 'Considerando',
+      exploring: 'Explorando',
+      solutions: 'solução(ões) encontrada(s)',
+      backtrack: 'Fazendo Backtrack',
+      addNumber: 'Adicionando Número',
+      skipNumber: 'Pulando Número',
+      solutionFound: 'Solução Encontrada',
+      pathRejected: 'Caminho Rejeitado',
+      searchComplete: 'Busca Completa',
+      startSearch: 'Iniciando Busca',
+      solutionCount: (count: number) => `${count} solução(ões) encontrada(s)`,
+      complexityInfo: 'Complexidade: O(2^n) - Explora todas as combinações possíveis',
+      pruningNote: 'Backtracking permite poda da árvore de busca quando condições são violadas',
+      // Descrições dinâmicas
+      currentState: (path: string, sum: number, index: number) => 
+        `Estado atual: caminho=[${path}], soma=${sum}, índice=${index}`,
+      solutionFoundDetail: (path: string, sum: number) => 
+        `Solução encontrada! [${path}] = ${sum}`,
+      tryingInclude: (num: number, newSum: number) => 
+        `Tentando incluir ${num}. Nova soma seria: ${newSum}`,
+      addingNumber: (num: number) => 
+        `Adicionando ${num} ao caminho. Explorando recursivamente...`,
+      backtrackingRemove: (num: number) => 
+        `Fazendo backtrack: removendo ${num} do caminho. Retornando para explorar outras opções.`,
+      skippingNumber: (num: number) => 
+        `Pulando ${num}. Explorando próximo número...`,
+      startingSearch: (target: number, numbers: string) => 
+        `Iniciando busca por subconjuntos que somam ${target} usando números [${numbers}]`,
+      searchCompleted: (count: number, solutions: string) => 
+        `Busca concluída! Encontradas ${count} solução(ões): ${solutions}`,
+    },
+    bfs: {
+      title: 'BFS - Busca em Largura',
+      description: 'Explora o grafo nível por nível, visitando todos os nós à mesma distância antes de ir mais longe.',
+      startNode: 'Nó Inicial',
+      targetNode: 'Nó Alvo',
+      generateGraph: 'Gerar Grafo Aleatório',
+      resetGraph: 'Resetar Grafo',
+      useDefaultGraph: 'Usar Grafo Padrão',
+      queue: 'Fila (FIFO)',
+      distances: 'Distâncias a partir de',
+      unvisited: 'Não visitado',
+      inQueue: 'Na fila',
+      pathFound: 'Caminho Encontrado',
+      targetUnreachable: 'Alvo Não Alcançável',
+      bfsComplete: 'BFS Completo',
+      visitingNode: 'Visitando Nó',
+      exploringNeighbors: 'Explorando Vizinhos',
+      startingBfs: 'Iniciando BFS',
+      guaranteesShortestPath: 'BFS garante o menor caminho em grafos não ponderados',
+      statusPathFound: 'Caminho encontrado!',
+      statusTargetUnreachable: 'Alvo não alcançável',
+      statusComplete: 'BFS Completo',
+      statusVisiting: 'Visitando nó',
+      statusExploring: 'Explorando vizinhos',
+      statusStarting: 'Iniciando BFS',
+      pathLabel: 'Caminho',
+      // Legend labels
+      visited: 'Visitado',
+      path: 'Caminho',
+      queueLabel: 'Fila (FIFO)',
+      visitedLabel: 'Visitados',
+      current: 'Atual',
+      distancesFrom: 'Distâncias a partir de',
+      targetNodeLabel: 'Nó Alvo',
+      // Dynamic descriptions
+      initializing: (startNode: string) => 
+        `Iniciando BFS a partir do nó ${startNode}. Adicionando ${startNode} à fila.`,
+      visiting: (currentNode: string, distance: number) => 
+        `Removendo ${currentNode} da fila e marcando como visitado. Distância: ${distance}.`,
+      targetFound: (targetNode: string, path: string[]) => 
+        `Alvo ${targetNode} encontrado! Caminho: ${path.join(' → ')}`,
+      exploringNeighborsDetail: (currentNode: string, neighbors: string[]) => 
+        `Explorando vizinhos de ${currentNode}: [${neighbors.join(', ')}]. Adicionando à fila.`,
+      noNeighbors: (currentNode: string) => 
+        `Nó ${currentNode} não tem vizinhos não visitados.`,
+      queueUpdate: (queue: string[], next: string) => 
+        `Fila atual: [${queue.join(', ')}]. Próximo: ${next}.`,
+      notFound: (targetNode: string, startNode: string) => 
+        `Alvo ${targetNode} não é alcançável a partir de ${startNode}.`,
+      completed: (visited: string[]) => 
+        `BFS concluído. Nós visitados: [${visited.join(', ')}]`
+    },
+    dfs: {
+      title: 'DFS - Busca em Profundidade',
+      description: 'Explora o grafo em profundidade, seguindo um caminho até o fim antes de retroceder.',
+      startNode: 'Nó Inicial',
+      targetNode: 'Nó Alvo',
+      generateGraph: 'Gerar Grafo Aleatório',
+      resetGraph: 'Resetar Grafo',
+      useDefaultGraph: 'Usar Grafo Padrão',
+      recursionStack: 'Pilha de Recursão',
+      depth: 'Profundidade',
+      discoveryFinishTimes: 'Tempos de Descoberta/Finalização',
+      discoveryTime: 'Tempo descoberta',
+      finishTime: 'Tempo finalização',
+      pathFound: 'Caminho Encontrado',
+      targetUnreachable: 'Alvo Não Alcançável',
+      dfsComplete: 'DFS Completo',
+      visitingNode: 'Visitando Nó',
+      exploringNeighbors: 'Explorando Vizinhos',
+      backtracking: 'Retrocedendo',
+      finishingNode: 'Finalizando Nó',
+      startingDfs: 'Iniciando DFS',
+      usesLessMemory: 'DFS usa menos memória que BFS, mas não garante o menor caminho',
+      // Legend labels
+      unvisited: 'Não visitado',
+      exploring: 'Explorando',
+      current: 'Atual',
+      visited: 'Visitado',
+      path: 'Caminho',
+      discoveryTimes: 'Tempos de Descoberta',
+      finishTimes: 'Tempos de Finalização',
+      complexityInfo: 'Complexidade: O(V + E) - Explora todos os vértices e arestas',
+      complexityNote: 'DFS usa menos memória que BFS, mas não garante o menor caminho',
+      // Dynamic descriptions
+      initializing: (startNode: string) => 
+        `Iniciando DFS a partir do nó ${startNode}. Adicionando ${startNode} à pilha.`,
+      visiting: (node: string, time: number, depth: number) => 
+        `Visitando nó ${node}. Tempo de descoberta: ${time}. Profundidade: ${depth}.`,
+      targetFound: (targetNode: string, path: string[]) => 
+        `Alvo ${targetNode} encontrado! Caminho: [${path.join(' → ')}]`,
+      exploringNeighborsDetail: (node: string, neighbors: string[]) => 
+        `Explorando vizinhos de ${node}: [${neighbors.join(', ')}]. Recursão em profundidade.`,
+      recursiveCall: (neighbor: string, depth: number) => 
+        `Fazendo chamada recursiva para o nó ${neighbor} (profundidade ${depth}).`,
+      finishing: (node: string, time: number) => 
+        `Finalizando processamento do nó ${node}. Tempo de finalização: ${time}.`,
+      starting: (targetNode: string) => 
+        `Iniciando busca em profundidade. Procurando pelo nó ${targetNode}.`,
+      notFound: (targetNode: string) => 
+        `Alvo ${targetNode} não foi encontrado. Busca concluída.`,
+      completed: (visited: string[]) => 
+        `DFS concluído. Nós visitados: [${visited.join(', ')}]`
+    },
+    dynamicProgramming: {
+      title: 'Programação Dinâmica',
+      description: 'Resolve problemas complexos dividindo-os em subproblemas menores e armazenando os resultados.',
+      problem: 'Problema',
+      fibonacci: 'Fibonacci',
+      knapsack: 'Mochila',
+      lcs: 'LCS',
+      capacity: 'Capacidade',
+      string1: 'String 1',
+      string2: 'String 2',
+      memoizationTable: 'Tabela de Memoização',
+      callStack: 'Pilha de Chamadas',
+      availableItems: 'Itens Disponíveis',
+      dpTable: 'Tabela DP',
+      weight: 'Peso',
+      maxValue: 'Valor Máximo',
+      selectedItems: 'Itens Selecionados',
+      lcsFound: 'LCS Encontrada',
+      length: 'Comprimento',
+      cacheHit: 'Cache Hit',
+      match: 'Match',
+      calculating: 'Calculando',
+      comparing: 'Comparando',
+      memoizationVsBruteForce: 'Fibonacci: O(n) com memoização vs O(2^n) sem',
+      knapsackComplexity: 'Mochila: O(nW) onde n=itens, W=capacidade',
+      lcsComplexity: 'LCS: O(mn) onde m,n são comprimentos das strings',
+      dividesProblems: 'Programação Dinâmica: Divide problemas em subproblemas e reutiliza soluções',
+      // Descrições dinâmicas
+      fibonacciStart: (n: number) => `Calculando Fibonacci(${n}) usando programação dinâmica com memoização.`,
+      fibonacciCalling: (n: number) => `Chamando fib(${n}). Verificando se está no memo...`,
+      fibonacciFoundInMemo: (n: number, value: number) => `fib(${n}) encontrado no memo: ${value}. Evitando recálculo!`,
+      fibonacciBaseCase: (n: number) => `Caso base: fib(${n}) = ${n}. Armazenando no memo.`,
+      fibonacciNotInMemo: (n: number) => `fib(${n}) não está no memo. Calculando fib(${n-1}) + fib(${n-2})...`,
+      fibonacciCalculated: (n: number, result1: number, result2: number, value: number) => `fib(${n}) = fib(${n-1}) + fib(${n-2}) = ${result1} + ${result2} = ${value}. Armazenado no memo.`,
+      fibonacciFinal: (n: number, result: number, memoSize: number) => `Fibonacci(${n}) = ${result}. Memo final contém ${memoSize} valores calculados.`,
+      knapsackStart: (capacity: number, n: number) => `Resolvendo problema da mochila: capacidade=${capacity}, ${n} itens. Criando tabela DP[${n+1}][${capacity+1}].`,
+      knapsackConsidering: (i: number, w: number, weight: number, value: number) => `DP[${i}][${w}]: Considerando item ${i} (peso=${weight}, valor=${value}) com capacidade ${w}.`,
+      knapsackItemFits: (takeItem: number, skipItem: number, chosen: number) => `Item cabe! Comparando: pegar item (${takeItem}) vs. pular item (${skipItem}). Escolhendo ${chosen}.`,
+      knapsackItemDoesntFit: (weight: number, capacity: number, value: number) => `Item não cabe (peso ${weight} > capacidade ${capacity}). Copiando valor anterior: ${value}.`,
+      knapsackFinalResult: (maxValue: number, items: string[]) => `Valor máximo: ${maxValue}. Itens selecionados: [${items.join(', ')}].`,
+      lcsStart: (str1: string, str2: string, m: number, n: number) => `Encontrando LCS de "${str1}" e "${str2}". Criando tabela DP[${m+1}][${n+1}].`,
+      lcsComparing: (i: number, j: number, char1: string, char2: string) => `DP[${i}][${j}]: Comparando "${char1}" e "${char2}".`,
+      lcsMatch: (i: number, j: number, value: number) => `Caracteres iguais! DP[${i}][${j}] = DP[${i-1}][${j-1}] + 1 = ${value}.`,
+      lcsDifferent: (i: number, j: number, value: number) => `Caracteres diferentes. DP[${i}][${j}] = max(DP[${i-1}][${j}], DP[${i}][${j-1}]) = ${value}.`,
+      lcsFinal: (lcs: string, length: number) => `LCS encontrada: "${lcs}" (comprimento: ${length}).`,
+    },
+    heap: {
+      title: 'Heap',
+      description: 'Estrutura de dados em árvore binária completa onde cada nó satisfaz a propriedade do heap.',
+      heapType: 'Tipo de Heap',
+      maxHeap: 'Max-Heap',
+      minHeap: 'Min-Heap',
+      operation: 'Operação',
+      insert: 'Inserir',
+      extract: 'Extrair',
+      heapify: 'Heapify Array',
+      valueToInsert: 'Valor a Inserir',
+      customArray: 'Array Personalizado',
+      generateHeap: 'Heap Aleatório',
+      binaryTree: 'Árvore Binária',
+      property: 'Propriedade: Cada nó é',
+      greaterOrEqual: 'maior ou igual',
+      lessOrEqual: 'menor ou igual',
+      toChildren: 'aos seus filhos',
+      arrayRepresentation: 'Representação em Array',
+      currentOperation: 'Operação Atual',
+      heapSize: 'Tamanho do Heap',
+      minimum: 'Mínimo',
+      maximum: 'Máximo',
+      insertion: 'Inserção',
+      preparingExtraction: 'Preparando Extração',
+      extractionComplete: 'Extração Completa',
+      heapifyComplete: 'Heapify Concluído',
+      heapifyUp: 'Heapify Up',
+      heapifyDown: 'Heapify Down',
+      swap: 'Troca',
+      start: 'Iniciando Operação',
+      elementsSwapped: 'Elementos Trocados',
+      insertingElement: 'Inserindo Elemento',
+      movingUp: 'Subindo na Árvore',
+      movingDown: 'Descendo na Árvore',
+      operationError: 'Erro na Operação',
+      insertExtractComplexity: 'Inserção/Extração O(log n), Heapify O(n), Acesso ao mín/máx O(1)',
+      idealForPriorityQueues: 'Heaps são ideais para filas de prioridade e algoritmos como Heap Sort',
+      maxElement: 'Elemento Máximo',
+      minElement: 'Elemento Mínimo',
+      operationDetails: 'Detalhes da Operação',
+      insertedValue: 'Valor inserido',
+      extractedValue: 'Valor extraído',
+      comparing: 'Comparando',
+      swappedIndices: 'Trocados: índices',
+      complexities: 'Complexidades',
+      // Descrições dinâmicas
+      comparingWithParent: (current: number, currentIdx: number, parent: number, parentIdx: number) => 
+        `Comparando ${current} (índice ${currentIdx}) com pai ${parent} (índice ${parentIdx}).`,
+      checkingChildren: (current: number, currentIdx: number, left: string, right: string) => 
+        `Verificando filhos de ${current} (índice ${currentIdx}). Esquerda: ${left}, Direita: ${right}.`,
+      startingOperation: (operation: string, heapType: string, heap: string) => 
+        `Iniciando operação ${operation} em ${heapType}. Estado inicial: [${heap}].`,
+      insertingValue: (value: number, index: number) => 
+        `Inserindo ${value} no final do heap. Nova posição: índice ${index}.`,
+      heapEmpty: () => 
+        `Heap vazio! Não é possível extrair elemento.`,
+      extractingElement: (element: number, isMax: boolean) => 
+        `Extraindo elemento ${isMax ? 'máximo' : 'mínimo'}: ${element}. Movendo último elemento para raiz.`,
+      newElementAtRoot: (value: number) => 
+        `Novo elemento na raiz: ${value}. Executando heapify-down para restaurar propriedade.`,
+      extractionCompleted: (element: number, heap: string) => 
+        `Extração concluída. Elemento ${element} foi removido. Heap final: [${heap}].`,
+      buildingHeap: (heapType: string) => 
+        `Construindo ${heapType} a partir do array. Começando do último nó não-folha.`,
+      heapifyingFrom: (index: number, value: number) => 
+        `Executando heapify-down a partir do índice ${index} (valor: ${value}).`,
+    }
+  }
 };
 
+    
     
