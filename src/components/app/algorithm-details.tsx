@@ -6,9 +6,19 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CodeBlock } from './code-block';
-import { Lightbulb, ListChecks, TestTube2, Timer, Database, BrainCircuit } from 'lucide-react';
+import { Lightbulb, ListChecks, TestTube2, Timer, Database, BrainCircuit, Play } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { Button } from '../ui/button';
+import { 
+  SlidingWindowVisualization,
+  TwoPointersVisualization, 
+  BinarySearchVisualization,
+  BacktrackingVisualization,
+  BFSVisualization,
+  DFSVisualization,
+  DynamicProgrammingVisualization,
+  HeapVisualization
+} from '@/components/visualizations';
 
 type AlgorithmDetailsProps = {
   algorithm: Algorithm;
@@ -19,6 +29,37 @@ export function AlgorithmDetails({ algorithm, onPractice }: AlgorithmDetailsProp
   const { t } = useI18n();
   const localizedAlgorithm = t.algorithms[algorithm.id];
   const bigO = algorithm.bigO;
+
+  // Função para renderizar a visualização apropriada
+  const renderVisualization = () => {
+    switch (algorithm.id) {
+      case 'sliding-window':
+        return <SlidingWindowVisualization />;
+      case 'two-pointers':
+        return <TwoPointersVisualization />;
+      case 'binary-search':
+        return <BinarySearchVisualization />;
+      case 'backtracking':
+        return <BacktrackingVisualization />;
+      case 'bfs':
+        return <BFSVisualization />;
+      case 'dfs':
+        return <DFSVisualization />;
+      case 'dynamic-programming':
+        return <DynamicProgrammingVisualization />;
+      case 'heap':
+        return <HeapVisualization />;
+      default:
+        return (
+          <Card className="p-8 text-center">
+            <div className="text-muted-foreground">
+              <Play className="h-12 w-12 mx-auto mb-4 opacity-50" />
+              <p>{t.algorithmDetails.visualizationInDevelopment}</p>
+            </div>
+          </Card>
+        );
+    }
+  };
 
   return (
     <ScrollArea className="h-full p-4 md:p-6">
@@ -31,10 +72,6 @@ export function AlgorithmDetails({ algorithm, onPractice }: AlgorithmDetailsProp
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 sm:space-y-6 overflow-hidden">
-          <p className="text-sm sm:text-base break-words leading-relaxed">
-            {localizedAlgorithm.description}
-          </p>
-
           <div className="space-y-3 sm:space-y-4">
             <h3 className="flex items-center gap-2 font-semibold text-base sm:text-lg">
               <Lightbulb className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
@@ -128,7 +165,7 @@ export function AlgorithmDetails({ algorithm, onPractice }: AlgorithmDetailsProp
         </CardContent>
       </Card>
 
-      <Card className="overflow-hidden">
+            <Card className="overflow-hidden">
         <CardHeader className="overflow-hidden">
           <CardTitle className="text-lg sm:text-xl break-words">{t.algorithmDetails.codeTemplates}</CardTitle>
           <CardDescription className="text-sm break-words">
@@ -136,12 +173,21 @@ export function AlgorithmDetails({ algorithm, onPractice }: AlgorithmDetailsProp
           </CardDescription>
         </CardHeader>
         <CardContent className="overflow-hidden">
-           <Tabs defaultValue="javascript" className="w-full overflow-hidden">
-            <TabsList className="grid w-full grid-cols-2 mb-2 sm:mb-4 h-8 sm:h-10">
+                      <Tabs defaultValue="visualization" className="w-full overflow-hidden">
+            <TabsList className="grid w-full grid-cols-3 mb-2 sm:mb-4 h-8 sm:h-10">
+              <TabsTrigger value="visualization" className="text-xs sm:text-sm px-2 sm:px-3">
+                <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                {t.algorithmDetails.visualization}
+              </TabsTrigger>
               <TabsTrigger value="javascript" className="text-xs sm:text-sm px-2 sm:px-3">JavaScript</TabsTrigger>
               <TabsTrigger value="python" className="text-xs sm:text-sm px-2 sm:px-3">Python</TabsTrigger>
             </TabsList>
             <div className="overflow-hidden w-full">
+              <TabsContent value="visualization" className="w-full overflow-hidden">
+                <div className="p-2">
+                  {renderVisualization()}
+                </div>
+              </TabsContent>
               <TabsContent value="javascript" className="w-full overflow-hidden">
                 <CodeBlock language="javascript" code={algorithm.codeTemplates.javascript} />
               </TabsContent>
