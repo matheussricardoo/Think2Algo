@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Algorithm } from '@/lib/algorithms';
 import { AlgorithmDetails } from '@/components/app/algorithm-details';
 import { ChallengesWorkspace } from '@/components/app/challenges-workspace';
+import { LeetCodeWorkspace } from '@/components/app/leetcode-workspace';
 import { Header } from './header';
 import { ScrollArea } from '../ui/scroll-area';
 import { AppSidebar } from './app-sidebar';
@@ -28,7 +29,7 @@ const BASE_TITLE = 'Think2Algo';
 
 export function AlgorithmWorkspace() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<Algorithm | null>(algorithms[0]);
-  const [activeView, setActiveView] = useState('algorithm'); // 'algorithm', 'challenges', 'big-o', or 'mike'
+  const [activeView, setActiveView] = useState('algorithm'); // 'algorithm', 'challenges', 'leetcode', 'big-o', or 'mike'
   const [challengeFilter, setChallengeFilter] = useState<string | null>(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const { t } = useI18n();
@@ -40,6 +41,8 @@ export function AlgorithmWorkspace() {
         title = `${BASE_TITLE} | ${t.algorithms[selectedAlgorithm.id].name}`;
     } else if (activeView === 'challenges') {
         title = `${BASE_TITLE} | ${t.sidebar.challenges}`;
+    } else if (activeView === 'leetcode') {
+        title = `${BASE_TITLE} | ${t.sidebar.leetcode}`;
     } else if (activeView === 'big-o') {
         title = `${BASE_TITLE} | ${t.sidebar.bigO}`;
     } else if (activeView === 'mike') {
@@ -75,6 +78,8 @@ export function AlgorithmWorkspace() {
     switch (activeView) {
       case 'challenges':
         return <ChallengesWorkspace algorithmFilter={challengeFilter} onClearFilter={() => setChallengeFilter(null)} />;
+      case 'leetcode':
+        return <LeetCodeWorkspace />;
       case 'big-o':
         return <BigOExplained />;
       case 'mike':
