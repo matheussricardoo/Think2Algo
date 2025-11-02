@@ -1,9 +1,12 @@
 'use client';
-import { GitMerge } from 'lucide-react';
+import { GitMerge, Code } from 'lucide-react';
 import { AlgorithmList } from './algorithm-list';
 import type { Algorithm } from '@/lib/algorithms';
-import { useI18n } from '@/lib/i18n.tsx';
+import { useI18n } from '@/lib/i18n';
 import { ScrollArea } from '../ui/scroll-area';
+import { Button } from '../ui/button';
+import { cn } from '@/lib/utils';
+import { Separator } from '../ui/separator';
 
 type AppSidebarProps = {
     onSelectView: (view: string, algorithm?: Algorithm) => void;
@@ -25,6 +28,18 @@ export function AppSidebar({ onSelectView, selectedView }: AppSidebarProps) {
                     selectedView={selectedView}
                     onSelectView={onSelectView}
                 />
+                <Separator className="my-2" />
+                <Button
+                    variant="ghost"
+                    className={cn(
+                        'w-full justify-start gap-3 px-3',
+                        selectedView === 'leetcode' && 'bg-muted text-primary hover:bg-muted hover:text-primary'
+                    )}
+                    onClick={() => onSelectView('leetcode')}
+                >
+                    <Code className="h-5 w-5 shrink-0" />
+                    <span className="truncate">{t.sidebar.leetcode}</span>
+                </Button>
             </div>
         </ScrollArea>
     </aside>
