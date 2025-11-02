@@ -10,7 +10,7 @@ export const leetcodeProblems: LeetCodeProblem[] = [
     leetcodeUrl: 'https://leetcode.com/problems/delete-nodes-from-linked-list-present-in-array/',
     runtime: '54ms (Beats 76.74%)',
     memory: '58.14 MB (Beats 87.44%)',
-    solvedDate: '2024-11-02',
+    solvedDate: '2025-11-01',
     description: {
       en: 'You are given an array of integers nums and the head of a linked list. Return the head of the modified linked list after removing all nodes from the linked list that have a value that exists in nums.',
       pt: 'Você recebe um array de inteiros nums e o head de uma lista ligada. Retorne o head da lista ligada modificada após remover todos os nós da lista ligada que possuem um valor que existe em nums.',
@@ -179,6 +179,232 @@ class Solution:
         
         # Passo 7: O next do sentinel aponta para o head da lista totalmente modificada.
         return sentinel.next`,
+      },
+    ],
+  },
+  {
+    id: 'count-unguarded-cells-in-the-grid',
+    number: 2257,
+    title: 'Count Unguarded Cells in the Grid',
+    difficulty: 'Medium',
+    category: ['Array', 'Matrix', 'Simulation'],
+    leetcodeUrl: 'https://leetcode.com/problems/count-unguarded-cells-in-the-grid/',
+    runtime: '439ms (Beats 46.94%)',
+    memory: '39.30MB (Beats 56.12%)',
+    solvedDate: '2025-11-02',
+    description: {
+      en: 'You are given two integers m and n representing a 0-indexed m x n grid. You are also given two 2D integer arrays guards and walls where guards[i] = [rowi, coli] and walls[j] = [rowj, colj] represent the positions of the ith guard and jth wall respectively. A guard can see every cell in the four cardinal directions (north, east, south, or west) starting from their position unless obstructed by a wall or another guard. A cell is guarded if there is at least one guard that can see it. Return the number of unoccupied cells that are not guarded.',
+      pt: 'Você recebe dois inteiros m e n representando um grid m x n indexado em 0. Você também recebe dois arrays inteiros 2D guards e walls onde guards[i] = [rowi, coli] e walls[j] = [rowj, colj] representam as posições do i-ésimo guarda e da j-ésima parede, respectivamente. Um guarda pode ver todas as células nas quatro direções cardeais (norte, leste, sul ou oeste) a partir de sua posição, a menos que seja obstruído por uma parede ou outro guarda. Uma célula é vigiada se houver pelo menos um guarda que possa vê-la. Retorne o número de células desocupadas que não são vigiadas.',
+    },
+    examples: [
+      {
+        input: 'm = 4, n = 6, guards = [[0,0],[1,1],[2,3]], walls = [[0,1],[2,2],[1,4]]',
+        output: '7',
+        explanation: 'The guarded and unguarded cells are shown in red and green respectively in the above diagram. There are a total of 7 unguarded cells, so we return 7.',
+      },
+      {
+        input: 'm = 3, n = 3, guards = [[1,1]], walls = [[0,1],[1,0],[2,1],[1,2]]',
+        output: '4',
+        explanation: 'The unguarded cells are shown in green in the above diagram. There are a total of 4 unguarded cells, so we return 4.',
+      },
+    ],
+    constraints: [
+      '1 <= m, n <= 10^5',
+      '2 <= m * n <= 10^5',
+      '1 <= guards.length, walls.length <= 5 * 10^4',
+      '2 <= guards.length + walls.length <= m * n',
+      'guards[i].length == walls[j].length == 2',
+      '0 <= rowi, rowj < m',
+      '0 <= coli, colj < n',
+      'All the positions in guards and walls are unique.',
+    ],
+    intuition: {
+      en: `When first looking at this problem, a naive approach might be to iterate through each guard and simulate their line of sight in all four directions, marking cells as guarded until a wall or another guard is hit. However, this is inefficient because multiple guards might see the same cells, causing us to re-process them unnecessarily.
+
+The key insight behind this solution is to reframe the problem. Instead of simulating vision from each guard, we can sweep across the entire grid and track the "guarded state". For example, to handle all horizontal vision, we can iterate through each row. Once we encounter a guard, we know every subsequent cell in that row is guarded until we hit a wall or another obstacle.
+
+This suggests a state-based traversal. We can make four passes over the grid: one for each cardinal direction (left-to-right, right-to-left, top-to-bottom, and bottom-to-top). During each pass, we maintain a boolean state (\`isGuarded\`) that tells us if the current line of cells is under a guard's watch. This way, we mark all guarded cells efficiently in just a few full grid traversals.`,
+      pt: `Ao analisar este problema, uma abordagem ingênua seria iterar por cada guarda e simular sua linha de visão nas quatro direções, marcando as células como vigiadas até que uma parede ou outro guarda seja encontrado. No entanto, isso é ineficiente porque vários guardas podem vigiar as mesmas células, fazendo com que as reprocessássemos desnecessariamente.
+
+A percepção chave por trás desta solução é reformular o problema. Em vez de simular a visão a partir de cada guarda, podemos varrer todo o grid e rastrear o "estado de vigilância". Por exemplo, para lidar com toda a visão horizontal, podemos iterar por cada linha. Assim que encontrarmos um guarda, sabemos que cada célula subsequente naquela linha está vigiada até atingirmos uma parede ou outro obstáculo.
+
+Isso sugere uma travessia baseada em estado. Podemos fazer quatro passagens pelo grid: uma para cada direção cardeal (esquerda-para-direita, direita-para-esquerda, cima-para-baixo e baixo-para-cima). Durante cada passagem, mantemos um estado booleano (\`isGuarded\`) que nos diz se a linha atual de células está sob o olhar de um guarda. Dessa forma, marcamos todas as células vigiadas de forma eficiente em apenas algumas travessias completas do grid.`,
+    },
+    approach: {
+      en: `The algorithm uses an auxiliary grid to represent the state of each cell and performs four directional sweeps to mark all guarded cells.
+
+1. Grid Initialization: Create an \`m x n\` grid and initialize all cells to \`0\` (Empty). We'll use integer codes for clarity: \`0\` for Empty, \`1\` for Guard, \`2\` for Wall, and \`3\` for Guarded.
+
+2. Place Obstacles: Populate the grid by iterating through the \`guards\` and \`walls\` lists, placing \`1\`s and \`2\`s at their respective coordinates. These are the fixed elements that control the line of sight.
+
+3. Mark Horizontally Guarded Cells (East and West):
+    - Left-to-Right Pass: Iterate through each row from left to right (\`c\` from \`0\` to \`n-1\`). Maintain a state variable \`isGuarded\`.
+        - If \`grid[r][c]\` is a Guard (\`1\`), set \`isGuarded = true\`.
+        - If \`grid[r][c]\` is a Wall (\`2\`), set \`isGuarded = false\` (vision is blocked).
+        - If \`isGuarded\` is true and \`grid[r][c]\` is an empty cell (\`0\`), update it to Guarded (\`3\`).
+    - Right-to-Left Pass: Repeat the same logic for each row, but iterate from right to left (\`c\` from \`n-1\` to \`0\`). This correctly marks cells seen by guards looking west.
+
+4. Mark Vertically Guarded Cells (South and North):
+    - Top-to-Bottom Pass: Iterate through each column from top to bottom (\`r\` from \`0\` to \`m-1\`). Use the same \`isGuarded\` state logic to mark cells seen by guards looking south.
+    - Bottom-to-Top Pass: Repeat for each column, but iterate from bottom to top (\`r\` from \`m-1\` to \`0\`) to handle guards looking north.
+
+5. Count Unguarded Cells: After all four passes, the grid is fully marked. Traverse the grid one final time and count the number of cells that are still \`0\`. These are the cells that are empty and not seen by any guard. Return this count.`,
+      pt: `O algoritmo usa um grid auxiliar para representar o estado de cada célula e realiza quatro varreduras direcionais para marcar todas as células vigiadas.
+
+1. Inicialização do Grid: Crie um grid \`m x n\` e inicialize todas as células como \`0\` (Vazio). Usaremos códigos inteiros para clareza: \`0\` para Vazio, \`1\` para Guarda, \`2\` para Parede e \`3\` para Vigiado.
+
+2. Posicionar Obstáculos: Preencha o grid iterando pelas listas \`guards\` e \`walls\`, posicionando \`1\`s e \`2\`s em suas respectivas coordenadas. Estes são os elementos fixos que controlam a linha de visão.
+
+3. Marcar Células Vigiadas Horizontalmente (Leste e Oeste):
+    - Passagem da Esquerda para a Direita: Itere por cada linha da esquerda para a direita (\`c\` de \`0\` a \`n-1\`). Mantenha uma variável de estado \`isGuarded\`.
+        - Se \`grid[r][c]\` for um Guarda (\`1\`), defina \`isGuarded = true\`.
+        - Se \`grid[r][c]\` for uma Parede (\`2\`), defina \`isGuarded = false\` (visão bloqueada).
+        - Se \`isGuarded\` for verdadeiro e \`grid[r][c]\` for uma célula vazia (\`0\`), atualize-a para Vigiada (\`3\`).
+    - Passagem da Direita para a Esquerda: Repita a mesma lógica para cada linha, mas iterando da direita para a esquerda (\`c\` de \`n-1\` a \`0\`). Isso marca corretamente as células vistas por guardas olhando para o oeste.
+
+4. Marcar Células Vigiadas Verticalmente (Sul e Norte):
+    - Passagem de Cima para Baixo: Itere por cada coluna de cima para baixo (\`r\` de \`0\` a \`m-1\`). Use a mesma lógica de estado \`isGuarded\` para marcar as células vistas por guardas olhando para o sul.
+    - Passagem de Baixo para Cima: Repita para cada coluna, mas iterando de baixo para cima (\`r\` de \`m-1\` a \`0\`) para lidar com guardas olhando para o norte.
+
+5. Contar Células Não Vigiadas: Após as quatro passagens, o grid está totalmente marcado. Percorra o grid uma última vez e conte o número de células que ainda são \`0\`. Estas são as células que estão vazias e não são vistas por nenhum guarda. Retorne essa contagem.`,
+    },
+    complexity: {
+      time: 'O(m × n)',
+      space: 'O(m × n)',
+      explanation: {
+        en: 'The algorithm is dominated by the grid traversals. We initialize the grid (O(m × n)), place guards and walls (O(G+W), where G and W are the number of guards and walls, which is less than m × n), and then perform four full sweeps of the grid, each taking O(m × n) time. The final count also takes O(m × n). Therefore, the total time complexity is linear in the size of the grid. We use an auxiliary grid of size m x n to store the state of each cell. This is the dominant factor in space usage.',
+        pt: 'O algoritmo é dominado pelas travessias do grid. Inicializamos o grid (O(m × n)), posicionamos guardas e paredes (O(G+W), onde G e W são os números de guardas e paredes, que é menor que m × n), e então realizamos quatro varreduras completas do grid, cada uma levando tempo O(m × n). A contagem final também leva O(m × n). Portanto, a complexidade de tempo total é linear em relação ao tamanho do grid. Usamos um grid auxiliar de tamanho m x n para armazenar o estado de cada célula. Este é o fator dominante no uso de espaço.',
+      },
+    },
+    code: [
+      {
+        language: 'python',
+        content: `from typing import List
+
+# State Codes:
+# 0 = Empty
+# 1 = Guard
+# 2 = Wall
+# 3 = Guarded
+
+class Solution:
+    def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
+        # Step 1: Initialize grid with 0s (Empty)
+        grid = [[0] * n for _ in range(m)]
+
+        # Step 2: Place guards (1) and walls (2)
+        for r, c in guards:
+            grid[r][c] = 1
+        for r, c in walls:
+            grid[r][c] = 2
+        
+        # Step 3: Mark Horizontally Guarded Cells
+        for r in range(m):
+            # Left-to-Right Pass (Eastward vision)
+            isGuarded = False
+            for c in range(n):
+                if grid[r][c] in (1, 2):
+                    isGuarded = (grid[r][c] == 1)
+                elif isGuarded and grid[r][c] == 0:
+                    grid[r][c] = 3
+            
+            # Right-to-Left Pass (Westward vision)
+            isGuarded = False
+            for c in range(n - 1, -1, -1):
+                if grid[r][c] in (1, 2):
+                    isGuarded = (grid[r][c] == 1)
+                elif isGuarded and grid[r][c] == 0:
+                    grid[r][c] = 3
+            
+        # Step 4: Mark Vertically Guarded Cells
+        for c in range(n):
+            # Top-to-Bottom Pass (Southward vision)
+            isGuarded = False
+            for r in range(m):
+                if grid[r][c] in (1, 2):
+                    isGuarded = (grid[r][c] == 1)
+                elif isGuarded and grid[r][c] == 0:
+                    grid[r][c] = 3
+
+            # Bottom-to-Top Pass (Northward vision)
+            isGuarded = False
+            for r in range(m - 1, -1, -1):
+                if grid[r][c] in (1, 2):
+                    isGuarded = (grid[r][c] == 1)
+                elif isGuarded and grid[r][c] == 0:
+                    grid[r][c] = 3
+                
+        # Step 5: Count remaining empty (0) cells
+        count = 0
+        for r in range(m):
+            for c in range(n):
+                if grid[r][c] == 0:
+                    count += 1
+            
+        return count`,
+        contentPt: `from typing import List
+
+# Códigos de Estado:
+# 0 = Vazio
+# 1 = Guarda
+# 2 = Parede
+# 3 = Vigiado
+
+class Solution:
+    def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
+        # Passo 1: Inicializa o grid com 0s (Vazio)
+        grid = [[0] * n for _ in range(m)]
+
+        # Passo 2: Posiciona guardas (1) e paredes (2)
+        for r, c in guards:
+            grid[r][c] = 1
+        for r, c in walls:
+            grid[r][c] = 2
+        
+        # Passo 3: Marca as Células Vigiadas Horizontalmente
+        for r in range(m):
+            # Passagem da Esquerda para a Direita (visão para o Leste)
+            isGuarded = False
+            for c in range(n):
+                if grid[r][c] in (1, 2):
+                    isGuarded = (grid[r][c] == 1)
+                elif isGuarded and grid[r][c] == 0:
+                    grid[r][c] = 3
+            
+            # Passagem da Direita para a Esquerda (visão para o Oeste)
+            isGuarded = False
+            for c in range(n - 1, -1, -1):
+                if grid[r][c] in (1, 2):
+                    isGuarded = (grid[r][c] == 1)
+                elif isGuarded and grid[r][c] == 0:
+                    grid[r][c] = 3
+            
+        # Passo 4: Marca as Células Vigiadas Verticalmente
+        for c in range(n):
+            # Passagem de Cima para Baixo (visão para o Sul)
+            isGuarded = False
+            for r in range(m):
+                if grid[r][c] in (1, 2):
+                    isGuarded = (grid[r][c] == 1)
+                elif isGuarded and grid[r][c] == 0:
+                    grid[r][c] = 3
+
+            # Passagem de Baixo para Cima (visão para o Norte)
+            isGuarded = False
+            for r in range(m - 1, -1, -1):
+                if grid[r][c] in (1, 2):
+                    isGuarded = (grid[r][c] == 1)
+                elif isGuarded and grid[r][c] == 0:
+                    grid[r][c] = 3
+                
+        # Passo 5: Conta as células vazias (0) restantes
+        count = 0
+        for r in range(m):
+            for c in range(n):
+                if grid[r][c] == 0:
+                    count += 1
+            
+        return count`,
       },
     ],
   },
