@@ -408,6 +408,125 @@ class Solution:
       },
     ],
   },
+  {
+    id: 'minimum-time-to-make-rope-colorful',
+    number: 1578,
+    title: 'Minimum Time to Make Rope Colorful',
+    difficulty: 'Medium',
+    category: ['Array', 'Greedy'],
+    leetcodeUrl: 'https://leetcode.com/problems/minimum-time-to-make-rope-colorful/',
+    runtime: '135ms (Beats 40.30%)',
+    memory: '26.50MB (Beats 18.82%)',
+    solvedDate: '2025-11-03',
+    description: {
+      en: 'Alice has n balloons arranged on a rope. You are given a 0-indexed string colors where colors[i] is the color of the ith balloon. Alice wants the rope to be colorful. She does not want two consecutive balloons of the same color, so she asks Bob for help. Bob can remove some balloons from the rope to make it colorful. You are given a 0-indexed integer array neededTime where neededTime[i] is the time (cost) that Bob needs to remove the ith balloon from the rope. Return the minimum time Bob needs to make the rope colorful.',
+      pt: 'Alice tem n balões arranjados em uma corda. Você recebe uma string indexada em 0 chamada colors onde colors[i] é a cor do i-ésimo balão. Alice quer que a corda seja colorida. Ela não quer dois balões consecutivos da mesma cor, então ela pede ajuda a Bob. Bob pode remover alguns balões da corda para torná-la colorida. Você recebe um array de inteiros indexado em 0 chamado neededTime onde neededTime[i] é o tempo (custo) que Bob precisa para remover o i-ésimo balão da corda. Retorne o tempo mínimo que Bob precisa para tornar a corda colorida.',
+    },
+    examples: [
+      {
+        input: 'colors = "abaac", neededTime = [1,2,3,4,5]',
+        output: '3',
+        explanation: 'Bob will remove the balloon at position 2, with a time cost of 3.',
+      },
+      {
+        input: 'colors = "abc", neededTime = [1,2,3]',
+        output: '0',
+        explanation: 'The rope is already colorful. Bob does not need to remove any balloons.',
+      },
+      {
+        input: 'colors = "aabaa", neededTime = [1,2,3,4,5]',
+        output: '2',
+        explanation: 'Bob will remove the balloon at position 0 and the balloon at position 1, with a total time cost of 1 + 2 = 2.',
+      },
+    ],
+    constraints: [
+      'n == colors.length == neededTime.length',
+      '1 <= n <= 10^5',
+      '1 <= neededTime[i] <= 10^4',
+      'colors contains only lowercase English letters.',
+    ],
+    intuition: {
+      en: `This problem involves removing balloons to ensure no two consecutive balloons have the same color, minimizing the total removal time. The key insight is that for each group of consecutive balloons of the same color, we need to keep only one balloon (the one with the highest removal time) and remove all others in that group. This greedy approach ensures we minimize the cost because we always preserve the most expensive balloon in each group, which would be the most costly to remove if we had to.`,
+      pt: `Este problema envolve remover balões para garantir que nenhum dois balões consecutivos tenham a mesma cor, minimizando o tempo total de remoção. A percepção chave é que para cada grupo de balões consecutivos da mesma cor, precisamos manter apenas um balão (aquele com o maior tempo de remoção) e remover todos os outros nesse grupo. Esta abordagem gananciosa garante que minimizamos o custo porque sempre preservamos o balão mais caro em cada grupo, que seria o mais custoso de remover se tivéssemos que.`,
+    },
+    approach: {
+      en: `We use a single-pass greedy algorithm to solve this problem efficiently.
+
+1. Initialize variables: \`total_time = 0\` to accumulate the removal cost, and \`max_cost_in_group = neededTime[0]\` to track the maximum cost in the current group of consecutive same-colored balloons.
+
+2. Iterate through the balloons starting from the second one (index 1):
+   - If the current balloon has the same color as the previous one, it's part of the same group.
+     - Add the minimum of the current balloon's cost and the max cost in the group to total_time.
+     - Update max_cost_in_group to the maximum of its current value and the current balloon's cost.
+   - If the colors differ, start a new group by setting max_cost_in_group to the current balloon's cost.
+
+3. Return the total_time, which represents the minimum cost to make the rope colorful.
+
+This approach ensures that in each group of consecutive same-colored balloons, we keep the one with the highest removal cost and remove the others, minimizing the total removal time.`,
+      pt: `Usamos um algoritmo ganancioso de passagem única para resolver este problema de forma eficiente.
+
+1. Inicialize variáveis: \`total_time = 0\` para acumular o custo de remoção, e \`max_cost_in_group = neededTime[0]\` para rastrear o custo máximo no grupo atual de balões consecutivos da mesma cor.
+
+2. Itere pelos balões começando do segundo (índice 1):
+   - Se o balão atual tiver a mesma cor que o anterior, faz parte do mesmo grupo.
+     - Adicione o mínimo do custo do balão atual e o custo máximo no grupo ao total_time.
+     - Atualize max_cost_in_group para o máximo de seu valor atual e o custo do balão atual.
+   - Se as cores diferirem, inicie um novo grupo definindo max_cost_in_group para o custo do balão atual.
+
+3. Retorne o total_time, que representa o custo mínimo para tornar a corda colorida.
+
+Esta abordagem garante que em cada grupo de balões consecutivos da mesma cor, mantemos aquele com o maior custo de remoção e removemos os outros, minimizando o tempo total de remoção.`,
+    },
+    complexity: {
+      time: 'O(n)',
+      space: 'O(1)',
+      explanation: {
+        en: 'We iterate through the array once, performing constant-time operations for each element. This gives us linear time complexity. We use only a few variables, so space complexity is constant.',
+        pt: 'Iteramos pelo array uma vez, realizando operações de tempo constante para cada elemento. Isso nos dá complexidade de tempo linear. Usamos apenas algumas variáveis, então a complexidade de espaço é constante.',
+      },
+    },
+    code: [
+      {
+        language: 'python',
+        content: `from typing import List
+
+class Solution:
+    def minCost(self, colors: str, neededTime: List[int]) -> int:
+        total_time = 0
+        max_cost_in_group = neededTime[0]
+        
+        for i in range(1, len(colors)):
+            if colors[i] == colors[i-1]:
+                # Conflito encontrado. Adiciona o mais barato ao tempo total.
+                total_time += min(max_cost_in_group, neededTime[i])
+                # O "sobrevivente" para a próxima comparação é o mais caro.
+                max_cost_in_group = max(max_cost_in_group, neededTime[i])
+            else:
+                # Novo grupo começa. Reseta o custo máximo para este novo grupo.
+                max_cost_in_group = neededTime[i]
+                
+        return total_time`,
+        contentPt: `from typing import List
+
+class Solution:
+    def minCost(self, colors: str, neededTime: List[int]) -> int:
+        total_time = 0
+        max_cost_in_group = neededTime[0]
+        
+        for i in range(1, len(colors)):
+            if colors[i] == colors[i-1]:
+                # Conflito encontrado. Adiciona o mais barato ao tempo total.
+                total_time += min(max_cost_in_group, neededTime[i])
+                # O "sobrevivente" para a próxima comparação é o mais caro.
+                max_cost_in_group = max(max_cost_in_group, neededTime[i])
+            else:
+                # Novo grupo começa. Reseta o custo máximo para este novo grupo.
+                max_cost_in_group = neededTime[i]
+                
+        return total_time`,
+      },
+    ],
+  },
 ];
 
 export const getLeetCodeProblemById = (id: string): LeetCodeProblem | undefined => {
