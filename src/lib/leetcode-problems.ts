@@ -527,6 +527,113 @@ class Solution:
       },
     ],
   },
+  {
+    id: 'find-x-sum-of-all-k-long-subarrays-i',
+    number: 3318,
+    title: 'Find X-Sum of All K-Long Subarrays I',
+    difficulty: 'Easy',
+    category: ['Array', 'Hash Table', 'Sliding Window'],
+    leetcodeUrl: 'https://leetcode.com/problems/find-x-sum-of-all-k-long-subarrays-i/',
+    runtime: '23ms (Beats 74.29%)',
+    memory: '17.82MB (Beats 59.90%)',
+    solvedDate: '2025-11-04',
+    description: {
+      en: 'You are given an array nums of n integers and two integers k and x. For each contiguous subarray of length k, compute its x-sum: keep only the occurrences of the top x most frequent elements (tie-breaker: larger value wins) and sum the remaining elements. Return the list of x-sums for every k-length window.',
+      pt: 'Você recebe um array nums de n inteiros e dois inteiros k e x. Para cada subarray contíguo de tamanho k, calcule sua x-soma: mantenha apenas as ocorrências dos x elementos mais frequentes (em caso de empate, o elemento de maior valor vence) e some os elementos restantes. Retorne a lista de x-somas para todas as janelas de tamanho k.',
+    },
+    examples: [
+      {
+        input: 'nums = [1,1,2,2,3,4,2,3], k = 6, x = 2',
+        output: '[6,10,12]',
+        explanation: 'For [1,1,2,2,3,4] -> keep 1 and 2 -> sum=6; [1,2,2,3,4,2] -> keep 2 and 4 (4 beats 3 on tie) -> sum=10; [2,2,3,4,2,3] -> keep 2 and 3 -> sum=12.',
+      },
+      {
+        input: 'nums = [3,8,7,8,7,5], k = 2, x = 2',
+        output: '[11,15,15,15,12]',
+        explanation: 'When k == x the x-sum is the sum of the window itself.',
+      },
+    ],
+    constraints: [
+      '1 <= n == nums.length <= 50',
+      '1 <= nums[i] <= 50',
+      '1 <= x <= k <= nums.length',
+    ],
+    intuition: {
+      en: `Compute the x-sum for a single window by counting frequencies, ranking by (frequency, value) and summing elements that belong to the top x distinct values. Because n <= 50, it's fine to do this from scratch for every window (brute-force sliding windows).`,
+      pt: `Calcule a x-soma para uma janela contando frequências, ordenando por (frequência, valor) e somando apenas os elementos que pertencem aos x valores distintos mais frequentes. Como n <= 50, é aceitável recalcular para cada janela (força bruta).`,
+    },
+    approach: {
+      en: `For each window: count frequencies with Counter, if distinct <= x return sum(window). Otherwise, build list of (freq, value), sort descending (freq then value), take top x values into a set, then sum only elements in the set. Slide the window by extracting subarray each time (n is small).`,
+      pt: `Para cada janela: conte frequências com Counter, se o número de distintos <= x retorne sum(window). Caso contrário, crie lista (freq, valor), ordene decrescentemente (freq depois valor), pegue os x valores principais em um set e some apenas os elementos presentes no set. Deslize a janela extraindo o subarray a cada iteração (n é pequeno).`,
+    },
+    complexity: {
+      time: 'O((n-k+1) * k log k) — aceitável para n <= 50',
+      space: 'O(k)',
+      explanation: {
+        en: 'Each window does counting (O(k)) and sorting up to k distinct elements (O(k log k)). There are O(n) windows so total is O((n-k+1)*k log k).',
+        pt: 'Cada janela faz contagem (O(k)) e ordenação de até k distintos (O(k log k)). Há O(n) janelas então o total é O((n-k+1)*k log k).',
+      },
+    },
+    code: [
+      {
+        language: 'python',
+        content: `from collections import Counter
+from typing import List
+
+class Solution:
+    def findXSum(self, nums: List[int], k: int, x: int) -> List[int]:
+        def calculate_x_sum(window, x_val):
+            counts = Counter(window)
+            if len(counts) <= x_val:
+                return sum(window)
+
+            freq_list = [(cnt, val) for val, cnt in counts.items()]
+            # sort by frequency desc, then value desc
+            freq_list.sort(reverse=True)
+
+            top_x = set(val for _, val in freq_list[:x_val])
+            total = 0
+            for v in window:
+                if v in top_x:
+                    total += v
+            return total
+
+        n = len(nums)
+        ans = []
+        for i in range(n - k + 1):
+            window = nums[i:i+k]
+            ans.append(calculate_x_sum(window, x))
+        return ans`,
+        contentPt: `from collections import Counter
+from typing import List
+
+class Solution:
+    def findXSum(self, nums: List[int], k: int, x: int) -> List[int]:
+        def calculate_x_sum(window, x_val):
+            counts = Counter(window)
+            if len(counts) <= x_val:
+                return sum(window)
+
+            freq_list = [(cnt, val) for val, cnt in counts.items()]
+            # ordena por frequência desc, depois valor desc
+            freq_list.sort(reverse=True)
+
+            top_x = set(val for _, val in freq_list[:x_val])
+            total = 0
+            for v in window:
+                if v in top_x:
+                    total += v
+            return total
+
+        n = len(nums)
+        ans = []
+        for i in range(n - k + 1):
+            window = nums[i:i+k]
+            ans.append(calculate_x_sum(window, x))
+        return ans`,
+      },
+    ],
+  },
 ];
 
 export const getLeetCodeProblemById = (id: string): LeetCodeProblem | undefined => {
